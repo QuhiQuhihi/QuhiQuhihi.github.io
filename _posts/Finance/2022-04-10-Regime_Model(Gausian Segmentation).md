@@ -3,7 +3,7 @@ title: Regime Switching Model (Greedy Gausian Segmentation)
 author:
   name: unknown
   link: https://github.com/QuhiQuhihi
-date: 2022-02-20 12:00:00 +0800
+date: 2022-04-10 12:00:00 +0800
 categories: [Financial Market]
 tags: [quant, market, statistics]
 render_with_liquid: false
