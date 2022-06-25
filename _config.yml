@@ -21,9 +21,10 @@ timezone: Asia/Seoul
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Unknown Quant                     # the main title
+title: Quantitative Boxer                   # the main title
 
-tagline: Let's Dive and Box. Interested in Machine Learning, Quantitative Analytics and Programming  # it will display as the sub-title
+tagline : I am boxer keen on quantitave analytics 
+#tagline: I believe a data-driven approach can create meaningful improvement   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   Quantitative Analytics and Machine Learning
