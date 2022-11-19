@@ -1,5 +1,5 @@
 ---
-title: Credit Default Swap (CDS) (In Process)
+title: Credit Default Swap (CDS)
 author: Quantitative Boxer
 date: 2022-11-05 12:00:00 +0800
 categories: [FICC Quant]
