@@ -20,18 +20,26 @@ If you just invest in US treasury or treasury of soverign country and wriiten in
 ## What is Credit Default Swap
 CDS is an insurance contract, which you can receice payment when default happens. Suppose you are portfolio manager at Korea, you want to invest emerging bond in US with USDollar. What you need to worry about is default of company or country and fluctuation of interest rate.  Supoose you are investing on corporate bond in US, you need to worry about default of company too. Before CDS there was no adequate method to mitigate credit risk only, since corporate bond rate is sum of market risk and credit risk.
 
+Cashflow of CDS seller, who receive premium for giving protection to buyer, is like below.  He/She receive fixed CDS premium at interest payement date. If default does not happens, CDS seller just receive premiums only. If default happens, CDS seller pays notional amount and receive impaired underlying asset. Since impaired asset, which is usually corporate bond, can recover after default, we need to consider recovery rate. However, this number vary by industry and it is determined by accountants and lawyers. So, in here we set recovery rate to zero.   
+![CDS](/assets/post_image/FICC/CDS/CDS1.png)
+   
+## From corporate bond to CDS
+Below picture shows typical cashflow from corporate bond.  
+![CDS](/assets/post_image/FICC/CDS/CDS2.png)
 
-![CCS](/assets/post_image/FICC/CDS/CDS1.png)
-![CCS](/assets/post_image/FICC/CDS/CDS2.png)
-![CCS](/assets/post_image/FICC/CDS/CDS3.png)
-![CCS](/assets/post_image/FICC/CDS/CDS4.png)
-![CCS](/assets/post_image/FICC/CDS/CDS5.png)
-![CCS](/assets/post_image/FICC/CDS/CDS6.png)
-![CCS](/assets/post_image/FICC/CDS/CDS7.png)
-![CCS](/assets/post_image/FICC/CDS/CDS8.png)
+Cashflow of corporate bond can be decomposed into interest, principal and payment at default.   
+![CDS](/assets/post_image/FICC/CDS/CDS4.png)
 
+We divide interest part to market risk and credit risk. And "asset swap spread" can be declared like this. $ Asset Swap Spread = CorporateBondYield - SwapSpread $. Using this, corporate bond interest can be decomposed like this.   
+![CDS](/assets/post_image/FICC/CDS/CDS5.png)
 
-Below picture gives you what really consists of CDS. CDS decomposition helps you to understand how above frightening equation is derived from.    
+Now, we change interest part and principal part into Interest Rate Swap and Floating rate bond investmebt.   
+![CDS](/assets/post_image/FICC/CDS/CDS6.png)
+
+In here, we add Asset Swap Spread(represent credit risk of corporate bond) to default part like below.   
+![CDS](/assets/post_image/FICC/CDS/CDS7.png)
+
+  
 
 ## Buyer and seller of credit default swap (CDS)
 Bid CDS (Protection Buy) = Sell corporate bond + Receive Interest Rate Swap + Buy Floating Rate Note     
@@ -39,17 +47,21 @@ Ask CDS (Protection Sell) = Buy corporate bond + Pay Interest Rate Swap + Buy Fl
 
 ## Summary
 See below picture, if you are facing trouble in memorizing the CDS structure.
-![CCS](/assets/post_image/FICC/CDS/CDS8.png)
+![CDS](/assets/post_image/FICC/CDS/CDS8.png)
 
 
 ## Prequisite
-You need two curve to price CDS. Since it is long-term contract with underlying asset of bond, discount curve is needed. In here, swap_curve function is to discount future cash flow. In addition, you need to calculate harzard rate since it has possibility of default. In here, cds_curve function is to discount expected cashflow at maturity considering default probability.   
+You need two curve to price CDS. Since it is long-term contract with underlying asset of bond, discount curve is needed. In here, swap_curve function is to discount future cash flow. In addition, you need to calculate harzard rate since it has possibility of default. In here, cds_curve function is to discount expected cashflow at maturity considering default probability.    
 
 ```python
 from quant_lib.cds_curve import get_irs_quote, get_cds_quote, swap_curve, cds_curve
 ```
 If you don't want to make your own swap curve library, go to this link and download and place it appripriate directory. 
 [CDS_Curve_Code](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/quant_lib/cds_curve.py)    
+
+Data for this project can be found here.   
+[CDS_Data](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/market_data/cds_data.xlsx)    
+
 
 ## Result
 Let's price credit default swap   
