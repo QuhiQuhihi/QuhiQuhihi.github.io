@@ -29,8 +29,19 @@ In finance domain, momentum means price movement trend. Stock price literally do
 Sector in stock market can easily be found in ETFs. In 1999, MSCI and S&P Dow Jones Indices developed the Global Industry Classification Standard (GICS), seeking to offer an efficient investment tool to capture the breadth, depth and evolution of industry sectors.
 
 List of standard sectors are as follows. 
-
-### Energy,  Material,  Industrial,  Consumer Discrretionary,  Consumer Staples, Health Care,  Financials,  Information Technology,  Communication Services,  Utilities,  Real Estate.
+```yaml
+Energy
+Material
+Industrial
+Consumer Discrretionary
+Consumer Staples
+Health Care
+Financials
+Information Technology
+Communication Services
+Utilities
+Real Estate
+```
 
 MSCI (Morgan Stanley Capital International) offers index for this sectors. These indexes are used as underlying index of ETFs. 
 
@@ -49,9 +60,9 @@ Stock Price (Y) At Time t =  $ Y_t $
 Universe = $ {X_1, X_2, ... , X_n} $    
 12 Month Momentum Score Of Asset i = $ M_i $    
 
-Select 5 sectors with highest momentum score and assign equl weight. 
+Select 5 sectors with highest momentum score and assign equl weight.    
 Selected Sector = $ {x_1, x_2, x_3, x_4, x_5} $    
-Selected Weight = $ {w_1, w_2, w_3, w_4, w_5} $    
+Selected Weight = $ {w_1, w_2, w_3, w_4, w_5} $     
 $ W_i $ = 1/5 
 
 

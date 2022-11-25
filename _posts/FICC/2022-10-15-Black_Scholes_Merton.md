@@ -31,9 +31,9 @@ $C(S,t)$ is price of European call option and $P(S,t)$ is price of European put 
 $N(x)$ denotes the standard normal cumulative distribution function.   
 
 boundary conditions for black-scholes formula are follows
-$C(0,t) = 0$ for all t,   
-$C(S,t) --> S-K$ as $S --> \infinity$   
-$C(S,T) = max{S-K, 0}$   
+$C(0,t) = 0$ for all t,    
+$C(S,t) --> S-K$ as $S --> \infty$     
+$C(S,T) = max{S-K, 0}$    
 
 Price of Call option is :
 $C(S_t,t) = N(d_1)S_t - N(d_2)Ke^{-r(T-t)}$   
@@ -42,7 +42,7 @@ Price of Put option is :
 $P(S_t,t) = N(-d_2)Ke^{-r(T-t)} - N(-d_1)S_t$
         $ = Ke^{-r(T-t)} -S_t + C(S_t, t)$    
 where 
-$d_1 = /frac{\sigma \sqrt{T-t}}{ln\frac{S_t}{K} + (r + \frac{2}{\sigma^2}(T-t))}$
+$d_1 = \frac{\sigma \sqrt{T-t}}{ln\frac{S_t}{K} + (r + \frac{2}{\sigma^2}(T-t))}$   
 $d_2 = d_1 - \sigma \sqrt{T-t} $
 
 ## Black Sholes with Code

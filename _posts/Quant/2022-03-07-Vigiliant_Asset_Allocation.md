@@ -60,7 +60,7 @@ TIP : iShares TIPS Bond ETF                                 2003-12-04
 ```
 
 ## Strategy Overview _ VAA
-![VAA](/assets/img/post_image/quant/momentum/VAA/momentum_0.PNG)  
+![VAA](/assets/img/post_image/quant/momentum/VAA/momentum_0.png)  
 
 ```yaml
                            Strategy    Benchmark
