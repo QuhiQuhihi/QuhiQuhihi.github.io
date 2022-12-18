@@ -3,7 +3,7 @@ title: Analyzing Sector ETF with Famma French factors (Code)
 author: quhiquhihi
   name: unknown
   link: https://github.com/QuhiQuhihi
-date: 2022-12-15 12:00:00 +0800
+date: 2022-12-10 12:00:00 +0800
 categories: [Finance 101]
 tags: [finance_101, investment]
 render_with_liquid: false
