@@ -1,5 +1,5 @@
 ---
-title: Analyzing Sector ETF with Famma French factors Result (In process)
+title: Analyzing Sector ETF with Famma French factors Result
 author: quhiquhihi
   name: unknown
   link: https://github.com/QuhiQuhihi
