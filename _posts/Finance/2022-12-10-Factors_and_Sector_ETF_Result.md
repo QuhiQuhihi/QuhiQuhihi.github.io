@@ -1,5 +1,5 @@
 ---
-title: Analyzing Sector ETF with Famma French factors Result
+title: Analyzing Sector ETF with Famma French factors (Result)
 author: quhiquhihi
   name: unknown
   link: https://github.com/QuhiQuhihi
@@ -16,17 +16,51 @@ This post is about sector ETF analysis with Famma French factors.
 If we invest in sector ETF such as Technology sector ETF(IYW), we might question what is important for my fund's performance. If you are qualitative analyst, you might take a look at company's strategy or product's competency. But if you are making decisions based on market data, you might wonder what kind of market events are important to my porfolio. In here, I pointed which factors were important for each sector ETF for each years.  
 
 ## Which factors are used in this post?
-In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post.   
+In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post. You can download factor data from Kenneth R. French website.
+[5_Factors] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.htm)     
+[Momentum] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html)    
+
+### Small Minus Big
+Small Minus Big(SMB) : the average return on the nine small stock portfolios minus the average return on the nine big stock portfolios.   
 ```yaml
-SMB (Small Minus Big) : the average return on the nine small stock portfolios minus the average return on the nine big stock portfolios
-HML (High Minus Low) : the average return on the two value portfolios minus the average return on the two growth portfolios
-RMW (Robust Minus Weak) : the average return on the two robust operating profitability portfolios minus the average return on the two weak operating profitability portfolios,
-CMA (Conservative Minus Aggressive) : the average return on the two conservative investment portfolios minus the average return on the two aggressive investment portfolios,
-Rm-Rf (Excess return on the market) : value-weight return of all CRSP firms that return data for t minus the one-month Treasury bill rate 
-Mom (Momentum) : the average return on the two high prior return portfolios minus the average return on the two low prior return portfolios
+SMB(B/M) = 1/3 (Small Value + Small Neutral + Small Growth) - 1/3 (Big Value + Big Neutral + Big Growth)
+
+SMB(OP) = 1/3 (Small Robust + Small Neutral + Small Weak) - 1/3 (Big Robust + Big Neutral + Big Weak)
+
+SMB(INV) = 1/3 (Small Conservative + Small Neutral + Small Aggressive) - 1/3 (Big Conservative + Big Neutral + Big Aggressive)
+
+SMB = 1/3 ( SMB(B/M) + SMB(OP) + SMB(INV) )
+```
+
+### High Minus Low
+High Minus Low(HML) : the average return on the two value portfolios minus the average return on the two growth portfolios
+```yaml
+HML = 1/2 (Small Value + Big Value) - 1/2 (Small Growth + Big Growth)
+```
+### Robust Minus Weak
+Robust Minus Weak(RMW) : the average return on the two robust operating profitability portfolios minus the average return on the two weak operating profitability portfolios,
+```yaml
+RMW = 1/2 (Small Robust + Big Robust) - 1/2 (Small Weak + Big Weak)
+```
+### Conservative Minus Aggressive
+Conservative Minus Aggressive(CMA) : the average return on the two conservative investment portfolios minus the average return on the two aggressive investment portfolios,
+```yaml
+CMA = 1/2 (Small Conservative + Big Conservative) - 1/2 (Small Aggressive + Big Aggressive)
+```
+### Excess return on the market
+Excess return on the market(Rm-Rf) : value-weight return of all CRSP firms that return data for t minus the one-month Treasury bill rate
+```yaml
+Rm-Rf = value-weight return of all CRSP firms - one month treasury bills rate
+```
+### Market Momentum
+Momentum(Mom) : the average return on the two high prior return portfolios minus the average return on the two low prior return portfolios
+```yaml
+Mom =	1/2 (Small High + Big High) - 1/2(Small Low + Big Low)
 ```
 
 ### Sector ETF used in this post
+Sector ETF is listed fund, which enable investors to invest in certain stock sector. Unlike other sector mutual active fund, these ETFs follow underlying benchmark indexes. Since benchmark indexes are rule-based indexes, fund mimicing these benchmarks menas that ETF are rule-based investment strategy.  
+Since ETFs are rule-based, we can mitigate active risk or deviation derived from human portfolio manager. So, these ETFs can effectively be decomposed by factor data.   
 ```yaml
 IYW  : iShares U.S. Technology ETF (2000-05-15)
 IYF  : iShares U.S. Financials ETF (2000-05-22)
