@@ -1,13 +1,11 @@
 ---
 title: Sector ETF and Famma-French Factors (Result)
-author: quhiquhihi
-  name: unknown
-  link: https://github.com/QuhiQuhihi
-date: 2022-12-15 12:00:00 +0800
+author: Quantitative Boxer
+date: 2022-11-05 12:00:00 +0800
 categories: [Finance 101]
 tags: [finance_101, investment]
+mermaid: true
 render_with_liquid: false
-use_math: true
 math: true
 ---
 

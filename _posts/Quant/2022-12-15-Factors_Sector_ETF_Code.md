@@ -1,16 +1,14 @@
 ---
 title: Sector ETF and Famma-French Factors (Code)
-author: quhiquhihi
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+author: Quantitative Boxer
 date: 2022-12-15 12:00:00 +0800
+categories: [FICC Quant]
 categories: [Finance 101]
 tags: [finance_101, investment]
+mermaid: true
 render_with_liquid: false
-use_math: true
 math: true
 ---
-
 This post is about sector ETF analysis with Famma French factors.
 
 ## Which factors are used in this post?
