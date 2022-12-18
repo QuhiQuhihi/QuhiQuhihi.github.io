@@ -16,7 +16,7 @@ This post is about sector ETF analysis with Famma French factors.
 If we invest in sector ETF such as Technology sector ETF(IYW), we might question what is important for my fund's performance. If you are qualitative analyst, you might take a look at company's strategy or product's competency. But if you are making decisions based on market data, you might wonder what kind of market events are important to my porfolio. In here, I pointed which factors were important for each sector ETF for each years.  
 
 ## Which factors are used in this post?
-In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post. You can download factor data from Kenneth R. French website.
+In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post. You can download factor data from Kenneth R. French website.   
 [5_Factors] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.htm)     
 [Momentum] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html)    
 
