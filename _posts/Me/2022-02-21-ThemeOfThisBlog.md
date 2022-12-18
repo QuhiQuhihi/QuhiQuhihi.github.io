@@ -18,7 +18,3 @@ I also had numerous chance to collaborate with backend developers. These experie
 
 ## Why quantitative boxer?
 I always try to make systematic and precise decision to beat market. In contrast, I always try to make quick and sensitive decision at boxing gym to beat opponents.
-
-## Personnel Page
-
-[Personnel Page](https://sites.google.com/view/dahamkim/home)
