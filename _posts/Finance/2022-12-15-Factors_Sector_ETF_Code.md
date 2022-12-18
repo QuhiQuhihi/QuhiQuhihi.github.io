@@ -1,5 +1,5 @@
 ---
-title: Sector ETF and Famma-French Factors (Result)
+title: Sector ETF and Famma-French Factors (Code)
 author: quhiquhihi
   name: unknown
   link: https://github.com/QuhiQuhihi
