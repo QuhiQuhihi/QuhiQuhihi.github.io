@@ -23,6 +23,12 @@ Major characteristics of private invetment is iliquid market and exotic structur
 
 Measuring the return on private investments provides investors with insights into the financial health and performance of their investments relative to the market. It helps in making informed decisions about where to allocate resources and how to strategize for future investments. By evaluating performance, investors can identify top-performing funds, assess fund managers' effectiveness, and compare returns across different asset classes. This measurement is critical not only for maximizing returns but also for understanding the risks associated with private equity investments.  
 
+## Full Code
+You can see full code in here 
+[CODE](https://github.com/QuhiQuhihi/Measuring-PE-investment-performance)
+
+
+```python
 
 ## Internal Rate of Return (IRR)
 The IRR is a popular metric in the PE industry, representing the discount rate that brings the net present value (NPV) of a series of cash flows to zero. It considers the size and timing of the fund's cash flows. However, IRR assumes reinvested capital at the same rate, potentially overstating performance for early successful exits due to unrealistic reinvestment opportunities. Below figure illustrates the concept of IRR in excel format. 
