@@ -16,8 +16,8 @@ If we invest in sector ETF such as Technology sector ETF(IYW), we might question
 
 ## Which factors are used in this post?
 In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post. You can download factor data from Kenneth R. French website.   
-[5_Factors] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.htm)     
-[Momentum] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html)    
+[5_Factors](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.htm)     
+[Momentum](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html)    
 
 ### Small Minus Big
 Small Minus Big(SMB) : the average return on the nine small stock portfolios minus the average return on the nine big stock portfolios.   

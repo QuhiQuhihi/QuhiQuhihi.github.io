@@ -12,10 +12,9 @@ math: true
 This post is about sector ETF analysis with Famma French factors.
 
 ## Which factors are used in this post?
-Factor is statiscal method to analyze impact of variable to data. For example, if many investors follow other investors.   
-In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post. You can download factor data from Kenneth R. French website.
-[5_Factors] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.htm)     
-[Momentum] (https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html)    
+Factor is statiscal method to analyze impact of variable to data. For example, if many investors follow other investors.  In this post, I used Famma-French 5 factor + momentum models to decompose sector ETFs. Below is description for factors used in this post. You can download factor data from Kenneth R. French website.
+[5_Factors](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.htm)     
+[Momentum](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html)    
 
 ```yaml
 SMB (Small Minus Big) : the average return on the nine small stock portfolios minus the average return on the nine big stock portfolios
@@ -60,7 +59,8 @@ IEZ  : iShares U.S. Oil Equipment & Services ETF (2006-05-01)
 
 
 ## (code) getting data
-you can see full code of this module in here [code] (https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/get_rawdata.py)    
+you can see full code of this module in here 
+[code](https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/get_rawdata.py)    
 ```python
 
 class RawDataGetter:
@@ -236,7 +236,7 @@ class RawDataProc:
 ```
 
 ## (code) build factor model
-you can see full code of this module in here [code] (https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/build_factor.py)    
+you can see full code of this module in here [code](https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/build_factor.py)    
 ```python
 class FactorDecompose:
 
