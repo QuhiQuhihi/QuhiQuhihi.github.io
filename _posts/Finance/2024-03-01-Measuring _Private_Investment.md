@@ -11,7 +11,7 @@ use_math: true
 math: true
 ---
 
-This post is about methodologies to measure private investment return (python code included). Reference for this post can be found in INSEAD case studies. Full python code can be found in my GitHub repo. [Git](https://github.com/QuhiQuhihi/Measuring-PE-investment-performance/tree/main). And full case note from INSEAD can be found in this link. [CASE_NOTE](https://www.insead.edu/sites/default/files/assets/dept/centres/gpei/docs/Measuring_PE_Fund-Performance-2019.pdf)
+This post is about methodologies to measure private investment return (python code included). Reference for this post can be found in INSEAD case studies. Full python code can be found in my GitHub repo. And full case note from INSEAD can be found in this link. [CASE_NOTE](https://www.insead.edu/sites/default/files/assets/dept/centres/gpei/docs/Measuring_PE_Fund-Performance-2019.pdf)
 
 
 ## Introduction
