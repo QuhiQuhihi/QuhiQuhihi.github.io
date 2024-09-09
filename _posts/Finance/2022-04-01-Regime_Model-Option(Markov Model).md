@@ -37,9 +37,7 @@ In this research, we propose a model that merges the classic **Black-Scholes-Mer
 
 We consider a stock price process \( X_t \) that evolves according to:
 
-\[
-dX_t = X_t \mu_{\varepsilon(t)} dt + X_t \sigma_{\varepsilon(t)} dW_t,
-\]
+$ dX_t = X_t \mu_{\varepsilon(t)} dt + X_t \sigma_{\varepsilon(t)} dW_t $
 
 where:
 
@@ -50,16 +48,11 @@ where:
 
 ## States of the Hidden Markov Model
 
-We define a three-state HMM to capture different phases of the business cycle:
+We define a three-state HMM to capture different phases of the business cycle \varepsilon(t):
 
-\[
-\varepsilon(t) =
-\begin{cases}
-0, & \text{Contraction (Low Volatility)}, \\
-1, & \text{Transition (Moderate Volatility)}, \\
-2, & \text{Expansion (High Volatility)}.
-\end{cases}
-\]
+- \varepsilon(t) = 0 Contraction (Low Volatility), \\
+- \varepsilon(t) = 1 Transition (Moderate Volatility), \\
+- \varepsilon(t) = 2 Expansion (High Volatility) \\
 
 A three-state HMM effectively captures the empirical phenomena of financial time series, allowing for more nuanced modeling than a two-state model.
 
@@ -85,17 +78,13 @@ Since the market is incomplete due to the presence of unhedgeable risks from the
 
 To ensure absence of arbitrage, we need to find an equivalent **risk-neutral measure** \( Q \). Under \( Q \), the adjusted dynamics of the stock price become:
 
-\[
-dX_t = X_t r dt + X_t \sigma_{\varepsilon(t)} dW_t^Q,
-\]
+$ dX_t = X_t r dt + X_t \sigma_{\varepsilon(t)} dW_t^Q $
 
 where \( dW_t^Q \) is a Brownian motion under the risk-neutral measure.
 
 The adjusted transition rates under \( Q \) are:
 
-\[
-\lambda_i^Q = \frac{r}{r + k_i} \lambda_i,
-\]
+$\lambda_i^Q = \frac{r}{r + k_i} \lambda_i $
 
 where \( k_i \) is the market price of risk associated with state \( i \).
 
@@ -110,9 +99,8 @@ The primary goal is to derive the arbitrage-free price of a European call option
 
 The arbitrage-free price \( V_i(T, K, r) \) of a European call option, given the initial state \( \varepsilon(0) = i \), is:
 
-\[
-V_i(T, K, r) = e^{-rT} \mathbb{E}^Q\left[ (X_T - K)^+ \mid \varepsilon(0) = i \right],
-\]
+$ V_i(T, K, r) = e^{-rT} \mathbb{E}^Q\left[ (X_T - K)^+ \mid \varepsilon(0) = i \right] $
+
 
 where:
 
@@ -124,9 +112,7 @@ where:
 
 Let \( T_i \) be the occupation time in state \( i \) up to time \( T \). The option price can be expressed as:
 
-\[
-V_i(T, K, r) = e^{-rT} \int_{0}^{T} \mathbb{E}^Q\left[ (X_T - K)^+ \mid T_i = t \right] f_i(t, T) dt,
-\]
+$ V_i(T, K, r) = e^{-rT} \int_{0}^{T} \mathbb{E}^Q\left[ (X_T - K)^+ \mid T_i = t \right] f_i(t, T) dt $
 
 where \( f_i(t, T) \) is the probability density function of \( T_i \).
 
@@ -134,12 +120,8 @@ where \( f_i(t, T) \) is the probability density function of \( T_i \).
 
 Under the risk-neutral measure, the log-price \( \ln X_T \) is normally distributed with mean and variance:
 
-\[
-\begin{aligned}
-m(t) &= \ln X_0 + \left( r - \frac{1}{2} \sigma_{\varepsilon(t)}^2 \right) T, \\
-v(t) &= \int_{0}^{T} \sigma_{\varepsilon(s)}^2 ds.
-\end{aligned}
-\]
+$ m(t) &= \ln X_0 + \left( r - \frac{1}{2} \sigma_{\varepsilon(t)}^2 \right) T $ \\
+$ v(t) &= \int_{0}^{T} \sigma_{\varepsilon(s)}^2 ds $
 
 
 
@@ -147,21 +129,17 @@ v(t) &= \int_{0}^{T} \sigma_{\varepsilon(s)}^2 ds.
 
 Combining the above, the arbitrage-free price of the European call option is:
 
-\[
-V_i(T, K, r) = e^{-rT} \int_{0}^{T} \left[ X_0 e^{m(t) + \frac{1}{2} v(t)} N(d_1) - K N(d_2) \right] f_i(t, T) dt,
-\]
+$ V_i(T, K, r) = e^{-rT} \int_{0}^{T} \left[ X_0 e^{m(t) + \frac{1}{2} v(t)} N(d_1) - K N(d_2) \right] f_i(t, T) dt $
 
 where:
 
 - \( N(\cdot) \) is the cumulative distribution function of the standard normal distribution.
 - \( d_1 \) and \( d_2 \) are given by:
 
-\[
-\begin{aligned}
-d_1 &= \frac{m(t) - \ln K + v(t)}{\sqrt{v(t)}}, \\
-d_2 &= d_1 - \sqrt{v(t)}.
-\end{aligned}
-\]
+
+$ d_1 &= \frac{m(t) - \ln K + v(t)}{\sqrt{v(t)}} $ \\
+$ d_2 &= d_1 - \sqrt{v(t)} $
+
 
 This formula generalizes the classic Black-Scholes formula to accommodate regime-dependent volatility.
 
@@ -170,9 +148,7 @@ This formula generalizes the classic Black-Scholes formula to accommodate regime
 
 For an HMM with \( N \) finite states, the option price becomes:
 
-\[
-V_i(T, K, r) = e^{-rT} \int_{\mathcal{S}} \left[ X_0 e^{m(\mathbf{t}) + \frac{1}{2} v(\mathbf{t})} N(d_1) - K N(d_2) \right] f_i(\mathbf{t}, T) d\mathbf{t},
-\]
+$ V_i(T, K, r) = e^{-rT} \int_{\mathcal{S}} \left[ X_0 e^{m(\mathbf{t}) + \frac{1}{2} v(\mathbf{t})} N(d_1) - K N(d_2) \right] f_i(\mathbf{t}, T) d\mathbf{t} $
 
 where:
 
@@ -187,18 +163,14 @@ where:
 
 This method discretizes the stochastic differential equation (SDE) governing \( X_t \):
 
-\[
-X_{n+1} = X_n \exp\left( \left( r - \frac{1}{2} \sigma_{\varepsilon_n}^2 \right) \Delta t + \sigma_{\varepsilon_n} \sqrt{\Delta t} \eta_n \right),
+$ X_{n+1} = X_n \exp\left( \left( r - \frac{1}{2} \sigma_{\varepsilon_n}^2 \right) \Delta t + \sigma_{\varepsilon_n} \sqrt{\Delta t} \eta_n \right) $
 
-\]
 
 where \( \eta_n \) are independent standard normal random variables.
 
 ### Markovian Tree Method
 
 This method constructs a recombining tree that accounts for both the stochastic process \( X_t \) and the Markov chain \( \varepsilon(t) \), capturing possible transitions between states at each time step.
-
-
 
 
 ## Simulation Results
