@@ -41,18 +41,18 @@ $ dX_t = X_t \mu_{\varepsilon(t)} dt + X_t \sigma_{\varepsilon(t)} dW_t $
 
 where:
 
-- \( \mu_{\varepsilon(t)} \) and \( \sigma_{\varepsilon(t)} \) are the state-dependent drift and volatility parameters.
-- \( \varepsilon(t) \) is a stochastic process representing the unobserved state of the business cycle.
-- \( W_t \) is a standard Brownian motion.
+- $ \mu_{\varepsilon(t)}$ and $ \sigma_{\varepsilon(t)}$ are the state-dependent drift and volatility parameters.
+- $ \varepsilon(t) $ is a stochastic process representing the unobserved state of the business cycle.
+- $ W_t $ is a standard Brownian motion.
 
 
 ## States of the Hidden Markov Model
 
 We define a three-state HMM to capture different phases of the business cycle \varepsilon(t):
 
-- \varepsilon(t) = 0 Contraction (Low Volatility), \\
-- \varepsilon(t) = 1 Transition (Moderate Volatility), \\
-- \varepsilon(t) = 2 Expansion (High Volatility) \\
+- $\varepsilon(t) = 0$ Contraction (Low Volatility), 
+- $\varepsilon(t) = 1$ Transition (Moderate Volatility), 
+- $\varepsilon(t) = 2$ Expansion (High Volatility) 
 
 A three-state HMM effectively captures the empirical phenomena of financial time series, allowing for more nuanced modeling than a two-state model.
 
@@ -61,32 +61,32 @@ A three-state HMM effectively captures the empirical phenomena of financial time
 ## Major Assumptions
 The model is built on several key assumptions:
 
-1. **Independence**: The state process \( \varepsilon(t) \) is independent of the Brownian motion \( W_t \).
+1. **Independence**: The state process $ \varepsilon(t) $ is independent of the Brownian motion $ W_t $.
 2. **Fixed Asset Supply**: The total shares of the risky asset are fixed and normalized to 1.
-3. **Risk-Free Rate**: The risk-free asset offers a constant instantaneous rate of return \( r \).
-4. **Finite States**: The state process \( \varepsilon(t) \) is a Markov process with a finite number of states.
-5. **Observability**: Each state has different volatility \( \sigma_{\varepsilon(t)} \), making \( \varepsilon(t) \) effectively observable through market data.
-6. **Exponential Holding Times**: The time spent in each state follows an exponential distribution with rate \( \lambda_i \), i.e., \( P(\tau_i > t) = e^{-\lambda_i t} \) for state \( i \).
+3. **Risk-Free Rate**: The risk-free asset offers a constant instantaneous rate of return $ r $.
+4. **Finite States**: The state process $ \varepsilon(t) $ is a Markov process with a finite number of states.
+5. **Observability**: Each state has different volatility $ \sigma_{\varepsilon(t)} $, making $ \varepsilon(t) $ effectively observable through market data.
+6. **Exponential Holding Times**: The time spent in each state follows an exponential distribution with rate $ \lambda_i $, i.e., $ P(\tau_i > t) = e^{-\lambda_i t} $ for state $ i $.
 
 
 
 ## Completing the Market: Risk-Neutral Measure
 
-Since the market is incomplete due to the presence of unhedgeable risks from the Markov process \( \varepsilon(t) \), we introduce a **Completing-of-Securities (COS)** contract. This contract pays one dollar at the next state change of \( \varepsilon(t) \).
+Since the market is incomplete due to the presence of unhedgeable risks from the Markov process $ \varepsilon(t) $, we introduce a **Completing-of-Securities (COS)** contract. This contract pays one dollar at the next state change of $ \varepsilon(t) $.
 
 ### Adjusting for Risk Neutrality
 
-To ensure absence of arbitrage, we need to find an equivalent **risk-neutral measure** \( Q \). Under \( Q \), the adjusted dynamics of the stock price become:
+To ensure absence of arbitrage, we need to find an equivalent **risk-neutral measure** $ Q $. Under $ Q $, the adjusted dynamics of the stock price become:
 
 $ dX_t = X_t r dt + X_t \sigma_{\varepsilon(t)} dW_t^Q $
 
-where \( dW_t^Q \) is a Brownian motion under the risk-neutral measure.
+where $ dW_t^Q $ is a Brownian motion under the risk-neutral measure.
 
-The adjusted transition rates under \( Q \) are:
+The adjusted transition rates under $ Q $ are:
 
 $\lambda_i^Q = \frac{r}{r + k_i} \lambda_i $
 
-where \( k_i \) is the market price of risk associated with state \( i \).
+where $ k_i $ is the market price of risk associated with state $ i $.
 
 
 
@@ -97,28 +97,28 @@ The primary goal is to derive the arbitrage-free price of a European call option
 
 ### Theoretical Framework
 
-The arbitrage-free price \( V_i(T, K, r) \) of a European call option, given the initial state \( \varepsilon(0) = i \), is:
+The arbitrage-free price $ V_i(T, K, r) $ of a European call option, given the initial state $ \varepsilon(0) = i $, is:
 
 $ V_i(T, K, r) = e^{-rT} \mathbb{E}^Q\left[ (X_T - K)^+ \mid \varepsilon(0) = i \right] $
 
 
 where:
 
-- \( T \) is the time to maturity.
-- \( K \) is the strike price.
-- \( \mathbb{E}^Q \) denotes the expectation under the risk-neutral measure.
+- $ T $ is the time to maturity.
+- $ K $ is the strike price.
+- $ \mathbb{E}^Q $ denotes the expectation under the risk-neutral measure.
 
 ### Occupation Times
 
-Let \( T_i \) be the occupation time in state \( i \) up to time \( T \). The option price can be expressed as:
+Let $ T_i $ be the occupation time in state $ i $ up to time $ T $. The option price can be expressed as:
 
 $ V_i(T, K, r) = e^{-rT} \int_{0}^{T} \mathbb{E}^Q\left[ (X_T - K)^+ \mid T_i = t \right] f_i(t, T) dt $
 
-where \( f_i(t, T) \) is the probability density function of \( T_i \).
+where $ f_i(t, T) $ is the probability density function of $ T_i $.
 
 ### Stock Price Dynamics Under Risk Neutrality
 
-Under the risk-neutral measure, the log-price \( \ln X_T \) is normally distributed with mean and variance:
+Under the risk-neutral measure, the log-price $ \ln X_T $ is normally distributed with mean and variance:
 
 $ m(t) &= \ln X_0 + \left( r - \frac{1}{2} \sigma_{\varepsilon(t)}^2 \right) T $ \\
 $ v(t) &= \int_{0}^{T} \sigma_{\varepsilon(s)}^2 ds $
@@ -133,8 +133,8 @@ $ V_i(T, K, r) = e^{-rT} \int_{0}^{T} \left[ X_0 e^{m(t) + \frac{1}{2} v(t)} N(d
 
 where:
 
-- \( N(\cdot) \) is the cumulative distribution function of the standard normal distribution.
-- \( d_1 \) and \( d_2 \) are given by:
+- $ N(\cdot) $ is the cumulative distribution function of the standard normal distribution.
+- $ d_1 $ and $ d_2 $ are given by:
 
 
 $ d_1 &= \frac{m(t) - \ln K + v(t)}{\sqrt{v(t)}} $ \\
@@ -152,9 +152,9 @@ $ V_i(T, K, r) = e^{-rT} \int_{\mathcal{S}} \left[ X_0 e^{m(\mathbf{t}) + \frac{
 
 where:
 
-- \( \mathbf{t} = (t_0, t_1, \dots, t_N) \) are the occupation times in each state.
-- \( \mathcal{S} = \{ \mathbf{t} \mid t_0 + t_1 + \dots + t_N = T \} \).
-- \( m(\mathbf{t}) \) and \( v(\mathbf{t}) \) are computed based on the occupation times.
+- $ \mathbf{t} = (t_0, t_1, \dots, t_N) $ are the occupation times in each state.
+- $ \mathcal{S} = \{ \mathbf{t} \mid t_0 + t_1 + \dots + t_N = T \} $.
+- $ m(\mathbf{t}) $ and $ v(\mathbf{t}) $ are computed based on the occupation times.
 
 
 ## Numerical Methods and Simulation
@@ -166,11 +166,11 @@ This method discretizes the stochastic differential equation (SDE) governing \( 
 $ X_{n+1} = X_n \exp\left( \left( r - \frac{1}{2} \sigma_{\varepsilon_n}^2 \right) \Delta t + \sigma_{\varepsilon_n} \sqrt{\Delta t} \eta_n \right) $
 
 
-where \( \eta_n \) are independent standard normal random variables.
+where $ \eta_n $ are independent standard normal random variables.
 
 ### Markovian Tree Method
 
-This method constructs a recombining tree that accounts for both the stochastic process \( X_t \) and the Markov chain \( \varepsilon(t) \), capturing possible transitions between states at each time step.
+This method constructs a recombining tree that accounts for both the stochastic process $ X_t $ and the Markov chain $ \varepsilon(t) $, capturing possible transitions between states at each time step.
 
 
 ## Simulation Results
@@ -186,7 +186,7 @@ Using empirical data to classify high and low volatility regimes, we observed:
 
 ### 2. Transition Rates
 
-Different transition rate matrices \( Q \) impact the model's performance:
+Different transition rate matrices $ Q $ impact the model's performance:
 
 - When transition rates are similar across states, the discrete diffusion method excels.
 - With varying transition rates, the Markovian tree method shows better accuracy.
@@ -198,10 +198,10 @@ The model effectively captures the volatility surface across different strike pr
 
 ## Sensitivity Analysis
 
-A sensitivity analysis was conducted to assess the impact of model parameters \( \sigma \) (volatility) and \( \lambda \) (transition rates):
+A sensitivity analysis was conducted to assess the impact of model parameters $ \sigma $ (volatility) and $ \lambda $ (transition rates):
 
-- **Volatility (\( \sigma \))**: Higher volatility increases option prices, as expected.
-- **Transition Rates (\( \lambda \))**: Faster transitions between states lead to option prices converging across different initial states.
+- **Volatility $(\sigma )$**: Higher volatility increases option prices, as expected.
+- **Transition Rates $(\lambda)$**: Faster transitions between states lead to option prices converging across different initial states.
 
 
 ## Conclusion
