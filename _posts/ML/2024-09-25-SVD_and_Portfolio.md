@@ -16,7 +16,7 @@ This post is about SVD for investment analysis.
 ## What is Singular Value Decomposition
 For a set of orthogonal vectors, after a linear transformation, their magnitudes may change, but they can still remain orthogonal. What is this orthogonal set, and what is the result after the linear transformation? 
 
-SVD is decompose matrix $A$ which can be decomposed into $ U \Sigma V^{T}$. In here each matrixs have below size and characteristics.
+SVD is decompose matrix A which can be decomposed into $ \text{U} \times \Sigma \times V^{T}$. In here each matrixs have below size and characteristics.
 
 A: $(m \times n)$ rectangular matrix \\
 U: $(m \times m)$ orthogonal matrix \\
@@ -25,12 +25,7 @@ V: $(n \times n)$ orthogonal matrix \\
 
 In here, orthogonal matrix(U) is a matrix $UU^T = I $ and thus $U^T = U^{-1}$. The orthogonal vectors \( $\vec{x}$, $\vec{y}$ \), shown in the example before the linear transformation, can be thought of as a collection of column vectors, which corresponds to the \( V \) matrix in \( $A = U \Sigma V^{T} $\).
 
-$V =
-\begin{pmatrix}
-\vec{x} & \vec{y}
-\end{pmatrix}
-\tag{8}
-$
+$V =\vec{x} & \vec{y}$
 
 Additionally, the orthogonal vectors after the linear transformation, $\( A \vec{x}, A \vec{y} \)$, can be normalized to have unit length as $(\vec{u}_1, \vec{u}_2)$. The collection of these column vectors corresponds to the \( U \) matrix in $\( A = U \Sigma V^T \)$.
 
@@ -54,11 +49,11 @@ $
 $
 
 So, in terms of linear transformation, 
-$
-    AV = U \Sigma \\
-    A = U \Sigma V^{-1} \\
-    A = U \Sigma V^{T} \\
-$
+
+$ AV = U \Sigma $\\   
+$ AVV^{-1} = U \Sigma V^{-1}$ \\     
+$ AVV^{T} = U \Sigma V^{T} $\\      
+$A = U \Sigma V^{T}$ \\    
 
 In here, matrix V is called singular matrix which consists of n singular vectors (Eigenvector). The left singular vectors U come from the rows of A, and the right singular vectors V come from the columns of A. This means that The left singular vectors U correspond to the domain (input) of the transformation, while the right singular vectors V correspond to the codomain (output).
 
