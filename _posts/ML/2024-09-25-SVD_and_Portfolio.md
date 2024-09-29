@@ -68,7 +68,7 @@ In here, matrix V is called singular matrix which consists of n singular vectors
 
 
 ## How this can be used in investment portfolio
-For our application in investment portfolio, which consists of time series data, formulation of SVD will follow below. We are going to use three years ETF return data ($ 250 \times 3 = 750$). And there are 10 5 ETFs in our portfolio. So, matrix A will have $(750 \times 5)$. Graphically, it would be like this.
+For our application in investment portfolio, which consists of time series data, formulation of SVD will follow below. We are going to use three years ETF return data ($ 250 \times 3 = 750$). And there are 10 ETFs in our portfolio. So, matrix A will have $(750 \times 5)$. Graphically, it would be like this.
 
 ![SVD](/assets/img/post_image/ML/SVD/picture1.png)
 
