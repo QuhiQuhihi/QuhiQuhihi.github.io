@@ -62,7 +62,7 @@ $
 If you choose only $ \sigma_1 $ in dimensionality reduction, variance explained in dimensionality reduction can be expressed as follows:   
 $ Var Explained = \frac{\sigma_1}{\sigma_1 + \sigma_2}$   
 
-Combining this explained variance in singluar values, transpose of V $\( V^{T} \)$, can be used to explain portfolio. In here we are going to suppose that we have portfolio with N assets, and each asset have equal weight $\frac{1}/{N}$. If we use only $\sigma_1$ for dimensionality reduction, portfolio with weights $\vec{u}_1 \times original weight$ = $(u_1, u_2, ... ,u_{10}) \times \( 1/10, ... , 1/10 \)$ explains $\frac{\sigma_1}{\sigma_1 + \sigma_2}$ variance of original portfolio.
+Combining this explained variance in singluar values, transpose of V $\( V^{T} \)$, can be used to explain portfolio. In here we are going to suppose that we have portfolio with N assets, and each asset have equal weight $\frac{1}{N}$. If we use only $\sigma_1$ for dimensionality reduction, portfolio with weights $\vec{u}_1 \times original_weight = (u_1, u_2, ... ,u_{10}) \times \( 1/10, ... , 1/10 \)$ explains $\frac{\sigma_1}{\sigma_1 + \sigma_2}$ variance of original portfolio.
 
 In here, matrix V is called singular matrix which consists of n singular vectors (Eigenvector). The left singular vectors U come from the rows of A, and the right singular vectors V come from the columns of A. This means that The left singular vectors U correspond to the domain (input) of the transformation, while the right singular vectors V correspond to the codomain (output).
 
