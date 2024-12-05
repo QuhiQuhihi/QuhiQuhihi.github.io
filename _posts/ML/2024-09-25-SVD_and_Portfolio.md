@@ -120,7 +120,7 @@ After eigenvalue decomposition, I came up with first eigenvector, which are like
 
 Below graph shows how eigenvector explains the variance. And we decided to use the first eigenvector which explains around 60% of total variance.
 
-![SVD](/assets/img/post_image/ML/SVD/usequity_var_explained.pnd)
+![SVD](/assets/img/post_image/ML/SVD/usequity_var_explained.png)
 
 Lastly, portfolio constructed with first eigenvector efficiently track the benchmark with limited number of equities while maintain adequate performance
 
