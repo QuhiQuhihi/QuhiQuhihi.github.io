@@ -132,7 +132,7 @@ Lastly, portfolio constructed with first eigenvector efficiently track the bench
 
 ## Full Code
 Full code can be fond below link.
-[CODE](https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy)
+[CODE](https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/)
 
 
 ## Let's code this idea
@@ -215,5 +215,6 @@ print("Correlation of each stock's cumulative returns with the cumulative return
 print(correlations)
 ```
 
+## Conclusion
 
 In this project, the first singular vector of the returns of the major stock sector ETFs was used to identify the key drivers of the S&P500 market index returns. Even though the variance of the returns explained by the first singular vector is only 62%, the first singular vector still accounts for the most variance among the singular vectors and is significant for understanding the returns. By comparing the magnitude of the coefficients in the first singular vector, I chose the top 10 most dominant drivers to be the key drivers that were used to create small portfolios. Via data analysis, I created portfolio structures which efficiently track the benchmark with limited number of equities while maintain adequate performance. Even though this project used simplified models with only five years of data and is impractical to be directly used for investment, after applying further analyses building on this project to different benchmarks and various pools of assets, there is a potential to ease the difficulty of managing large portfolios and provide a solution to the problem of high transaction costs and fees.  
