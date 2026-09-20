@@ -5,11 +5,11 @@ order: 3.5
 permalink: /research/
 ---
 
-These five research collections connect an economic question to a mathematical model,
+These six research collections connect an economic question to a mathematical model,
 an implementation, and evidence that can challenge the result. The articles explain the
 ideas; the linked repositories contain detailed notes and executed notebooks.
 
-Revised **20 September 2026**. Historical ETF studies and constructed numerical examples
+Revised **21 September 2026**. Historical empirical studies and constructed numerical examples
 are identified separately throughout the articles.
 
 ## Robust asset allocation
@@ -99,3 +99,20 @@ sector names, and the longer nine-sector test is kept separate from the eleven-s
 The [five-chapter factor collection](https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF)
 provides short research notes and executed notebooks. Its evaluation uses realized factors;
 the result measures conditional reconstruction rather than a before-month return forecast.
+
+## Equity information in corporate bonds
+
+Adding issuer equity signals makes a bond factor portfolio less volatile, but reducing
+the original bond exposure offers a simpler alternative. This study asks whether the
+additional information earns its place after that comparison and implementation costs.
+
+[Do equity signals earn their place in a corporate bond portfolio?](/posts/Corporate_Bond_Factor_Strategy/)
+follows the sign conventions, the comparison with a scaled bond portfolio, and the
+opposing conditional results for equity momentum and value. The historical evidence
+does not establish an advantage for the fixed combination; it points to a narrower
+question about issuer information, credit risk, and stale bond prices.
+
+The [full research collection](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-)
+and [executed notebook](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/study.ipynb)
+retain the replication, uncertainty estimates, dependent source checks, and the
+explicitly unrun bond-level follow-up.

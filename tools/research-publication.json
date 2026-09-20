@@ -1,5 +1,5 @@
 {
-  "revision_date": "2026-09-20",
+  "revision_date": "2026-09-21",
   "starting_blog_commit": "c7da338efffd944eb57e4910e8e293751aaf2522",
   "source_projects": {
     "project_Asset_Allocation": {
@@ -21,6 +21,10 @@
     "Famma-French-Factors-with-Sector-ETF": {
       "repository": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF",
       "commit": "760a183c19f8a3d0e18c5482751bbe327a61680d"
+    },
+    "Factor-Strategy-for-Corporate-Bond-": {
+      "repository": "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-",
+      "commit": "1f565f6d7010274ff8feb333b9c05be11ba1dcfa"
     }
   },
   "posts": [
@@ -155,11 +159,17 @@
       "sha256": "5559c07de9843829136e3f92748d5c45215e97c7f2791cdcd68af91154dae212",
       "original_date": "2022-11-05 12:00:00 +0800",
       "previous_sha256": "506b752ae47a03b250b669ec3e61d7189a58e66cea0802336b632cdc2891ad39"
+    },
+    {
+      "path": "_posts/Quant/2026-09-21-Corporate_Bond_Factor_Strategy.md",
+      "sha256": "9da354142de4a71e8638ddae4a94d0181f8e03b16ad6bec2d512e83d26034cdf",
+      "original_date": "2026-09-21 00:00:00 +0900",
+      "previous_sha256": null
     }
   ],
   "research_index": {
     "path": "_tabs/research.md",
-    "sha256": "b0342a22746e65d826f5a8639e02f9b5efdf256581c7855cbc27c6e1fc914ebc"
+    "sha256": "f22bc7e3d4cb5bdc634621c6f7689930480f8bcf8ea3a30cef16cb78b45bc599"
   },
   "figures": [
     {
@@ -476,6 +486,24 @@
       "source_file_sha256": "180e603e54fff556582b013e221a1704c303e36041074b4834e4a415958fcc89",
       "copy_method": "Unmodified source figure",
       "source_url": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/760a183c19f8a3d0e18c5482751bbe327a61680d/research/figures/stability.png"
+    },
+    {
+      "path": "assets/post_image/renovated/corporate-bonds/cumulative_pnl.png",
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "source": "research/figures/cumulative_pnl.png",
+      "sha256": "33ef6b1ee64034c577a62421081f5cae6898f08cb2bcaebd8ac06902d3f74255",
+      "source_file_sha256": "33ef6b1ee64034c577a62421081f5cae6898f08cb2bcaebd8ac06902d3f74255",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/1f565f6d7010274ff8feb333b9c05be11ba1dcfa/research/figures/cumulative_pnl.png"
+    },
+    {
+      "path": "assets/post_image/renovated/corporate-bonds/incremental_alpha.png",
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "source": "research/figures/incremental_alpha.png",
+      "sha256": "5116db3099c3c062f829ccf1881c12237dfe15a2b5fd99f857010515ea52458f",
+      "source_file_sha256": "5116db3099c3c062f829ccf1881c12237dfe15a2b5fd99f857010515ea52458f",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/1f565f6d7010274ff8feb333b9c05be11ba1dcfa/research/figures/incremental_alpha.png"
     }
   ],
   "linked_research_files": {
@@ -883,13 +911,60 @@
       "project": "project_FICC_Quant",
       "path": "README.md",
       "sha256": "92cecd7cde068c2e90a63378eca79550b956c8d4044c18dc8b9139683cf0a0a3"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/docs/01-data.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "docs/01-data.md",
+      "sha256": "e6230cfa0361bbdf54f57d31d43cbe1ff01028ef5c98d070a6b825b598b5e318"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/docs/02-factors.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "docs/02-factors.md",
+      "sha256": "cee1be17b374962212484312495cc85b6c3110e15af197ac862cb102aeaf44da"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/docs/04-evaluation.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "docs/04-evaluation.md",
+      "sha256": "2da79239640424e92ecaf6c4b303d64feec737fa60d1ed7404b7bdb82b2bcd82"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/research/RESEARCH_AGENDA.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "research/RESEARCH_AGENDA.md",
+      "sha256": "b346d01343201f10248a9c3149e84d00c4662c498679c90851c81f137b4f2f88"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/study.ipynb": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "study.ipynb",
+      "sha256": "98ddcc87febbe99fd30db4992c7fca31b8b6e3ab030356c188a808435c91eede"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/docs/03-portfolios.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "docs/03-portfolios.md",
+      "sha256": "ec3c60835bc42cb3d935b05db5067f122b07ae39652d8c184ed994690010f988"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/research/SOURCES.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "research/SOURCES.md",
+      "sha256": "7a9cca8cae613cb2d81ee906ae6162df3ea95fd52a2d0aa94ca44ccdb38be895"
+    },
+    "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/research/DATA_NOTICE.md": {
+      "project": "Factor-Strategy-for-Corporate-Bond-",
+      "path": "research/DATA_NOTICE.md",
+      "sha256": "105601c95abf50ea5c12c1e78e1454257b8269aaa35ef6afc9225c8ff10b566c"
     }
   },
   "scope": "Editorial adaptation of completed research. No new historical data or research computations generated for this blog revision.",
   "validation": [
-    "Original article paths and publication dates preserved",
+    "Existing article paths and original publication dates preserved; corporate-bond article added on 21 September 2026",
     "Figure bytes match committed source figures or executed notebook outputs",
     "Linked main-branch research files verified against source commits",
     "Published Python examples executed in the corresponding locked project environments"
+  ],
+  "amendments": [
+    {
+      "date": "2026-09-21",
+      "starting_blog_commit": "bc29aefc87323ee7be5a16ed10c45fdfe3b052db",
+      "scope": "New corporate-bond research article, two original source figures, and Research index entry."
+    }
   ]
 }
