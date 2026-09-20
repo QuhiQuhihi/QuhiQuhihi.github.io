@@ -1,235 +1,78 @@
 ---
-title: Credit Default Swap (CDS)
-author: Quantitative Boxer
+title: "CDS in QuantLib: calibrate survival and reconcile the credit legs"
+author: daham
 date: 2022-11-05 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [FICC Quant]
-tags: [investment, derivative]
-mermaid: true
+tags: [investment, derivatives, QuantLib]
 render_with_liquid: false
 math: true
 ---
 
-This post is about credit default swap. Though CDS is not familiar, CDS can be used to protect from credit risk and market risk. If you heavily invest on foreign currency based bond for long term, and the bond has default risk, CDS is absoultely what you are looking for.  
+A credit default swap exchanges a running premium for protection against specified credit events. A useful implementation must connect the quoted spreads to survival probabilities and then explain the premium and protection legs of the actual ticket. The approximation “spread equals loss-given-default times hazard” is a helpful starting intuition, but it is not a substitute for contract-level valuation.
 
-## What is Market risk
-Market risk includes risk derived from interest rate, foreign currency exchnage rate fluctuation. These factors are mainly discussed in macro ecnoomy market. Forward Rate Agreement, Interest Rate Swap, and Cross Currency Swap are examples of financial instruments intened to protect from macro economic variable.    
+This example calibrates **illustrative 1Y, 3Y and 5Y spreads of 80, 110 and 140 bp**, assumes 40% recovery, and prices a separate five-year protection-buyer ticket with a 100 bp running premium. Its value is **+1.758672 per 100 notional** under the constructed model. Independently summed midpoint cash flows reproduce both legs and the total QuantLib value.
 
-## Whart is Credit risk
-If you just invest in US treasury or treasury of soverign country and wriiten in local currency, you don't have to deal with credit risk. But, if you want to invest in corporate bond or sovereign bond of emerging country, you need to worry about default risk. CDS is the instrument to mitigate credit risk when default happens.   
+## Follow the contingent cash flows
 
-## What is Credit Default Swap
-CDS is an insurance contract, which you can receice payment when default happens. Suppose you are portfolio manager at Korea, you want to invest emerging bond in US with USDollar. What you need to worry about is default of company or country and fluctuation of interest rate.  Supoose you are investing on corporate bond in US, you need to worry about default of company too. Before CDS there was no adequate method to mitigate credit risk only, since corporate bond rate is sum of market risk and credit risk.
+Let $Q(t)$ be survival probability and $R$ recovery. A simplified premium leg includes scheduled coupons weighted by survival, plus accrued premium payable upon default. The protection leg values the loss payment $N(1-R)$ over default-time probabilities. With discount factor $D(t)$, the continuous-time schematic is
 
-Cashflow of CDS seller, who receive premium for giving protection to buyer, is like below.  He/She receive fixed CDS premium at interest payement date. If default does not happens, CDS seller just receive premiums only. If default happens, CDS seller pays notional amount and receive impaired underlying asset. Since impaired asset, which is usually corporate bond, can recover after default, we need to consider recovery rate. However, this number vary by industry and it is determined by accountants and lawyers. So, in here we set recovery rate to zero.   
-![CDS](/assets/post_image/FICC/CDS/CDS1.png)
-   
-## From corporate bond to CDS
-Below picture shows typical cashflow from corporate bond.  
-![CDS](/assets/post_image/FICC/CDS/CDS2.png)
+$$PV_{protection}=N(1-R)\int_0^T D(t)\,[-dQ(t)].$$
 
-Cashflow of corporate bond can be decomposed into interest, principal and payment at default.   
-![CDS](/assets/post_image/FICC/CDS/CDS4.png)
+The buyer's value is protection received minus premium paid. A higher running premium therefore lowers value when the curves and other terms are unchanged. Recovery is an explicit model assumption in this example; setting it to zero simply for convenience would alter the calibration and the payment being valued.
 
-We divide interest part to market risk and credit risk. And "asset swap spread" can be declared like this. $ Asset Swap Spread = CorporateBondYield - SwapSpread $. Using this, corporate bond interest can be decomposed like this.   
-![CDS](/assets/post_image/FICC/CDS/CDS5.png)
+Hazard rates here belong to the pricing measure inferred from assumed spreads. They are not estimated physical default forecasts. Credit protection also does not remove every bond exposure: interest-rate, liquidity, contractual basis and counterparty risks require their own treatment.
 
-Now, we change interest part and principal part into Interest Rate Swap and Floating rate bond investmebt.   
-![CDS](/assets/post_image/FICC/CDS/CDS6.png)
+## Build and check the survival curve
 
-In here, we add Asset Swap Spread(represent credit risk of corporate bond) to default part like below.   
-![CDS](/assets/post_image/FICC/CDS/CDS7.png)
+The valuation date is **15 September 2026**. Discounting uses the project's constructed OIS curve. The calibration helpers use zero settlement days, quarterly premiums, Following adjustment, Forward schedule generation and Actual/360. A piecewise-flat hazard curve is bootstrapped against those helper contracts.
 
-  
-
-## Buyer and seller of credit default swap (CDS)
-Bid CDS (Protection Buy) = Sell corporate bond + Receive Interest Rate Swap + Buy Floating Rate Note     
-Ask CDS (Protection Sell) = Buy corporate bond + Pay Interest Rate Swap + Buy Floating Rate Note     
-
-## Summary
-See below picture, if you are facing trouble in memorizing the CDS structure.
-![CDS](/assets/post_image/FICC/CDS/CDS8.png)
-
-
-## Prequisite
-You need two curve to price CDS. Since it is long-term contract with underlying asset of bond, discount curve is needed. In here, swap_curve function is to discount future cash flow. In addition, you need to calculate harzard rate since it has possibility of default. In here, cds_curve function is to discount expected cashflow at maturity considering default probability.    
+Run this excerpt from the maintained project root. The call to survival probability triggers the lazy bootstrap; asking for implied helper quotes before calculation would obscure that dependency.
 
 ```python
-from quant_lib.cds_curve import get_irs_quote, get_cds_quote, swap_curve, cds_curve
-```
-If you don't want to make your own swap curve library, go to this link and download and place it appripriate directory. 
-[CDS_Curve_Code](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/quant_lib/cds_curve.py)    
-
-Data for this project can be found here.   
-[CDS_Data](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/market_data/cds_data.xlsx)    
-
-
-## Result
-Let's price credit default swap   
-```yaml
-price of CDS = 964810.2233
-IR Delta = -236.2413
-Credit Delta = -2693.3063
-Theta = 75.4122
-```
-
-
-## Let's code this idea
-Full code can be found at below link.   
-[CODE](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/11_Credit_Default_Swap.ipynb)
-
-## Full Code
-```python
-import os
-import datetime
-import numpy as np
-import pandas as pd
-
 import QuantLib as ql
+from research.pricing import DATE, CAL, valuation_date, curves
 
-from quant_lib.cds_curve import get_irs_quote, get_cds_quote, swap_curve, cds_curve
-
-class CDS():
-    def __init__(self, today, maturity_date, spread, recovery, notional, position):
-        
-        # initial setup
-        self.date = today
-        self.discount_curve_t0 = self.discount_curve(self.date)
-        self.cds_curve_t0 = self.cds_curve(self.date)
-
-        self.maturity_date = ql.Date(maturity_date.day, maturity_date.month, maturity_date.year)
-
-        if position == 'long':
-            self.position = ql.Protection.Buyer
-        else:
-            self.position = ql.Protection.Seller
-
-        self.spread = spread
-        self.notional = notional
-        self.recovery_rate = recovery
-
-        self.tenor = ql.Period(3, ql.Months)
-        self.calendar =  ql.UnitedStates()
-        self.convention = ql.ModifiedFollowing
-        self.dateGeneration = ql.DateGeneration.CDS
-        self.dayCount = ql.Actual360()
-        self.endOfMonth = False
-
-        # pricing result
-        self.npv = self.pricing(self.discount_curve_t0, self.cds_curve_t0)
-        self.ir_delta = self.ir_delta()
-        self.credit_delta = self.credit_delta()
-        self.theta = self.theta()
-
-    def discount_curve(self, date):
-        return swap_curve(date, get_irs_quote(date))
-    
-    def cds_curve(self, date):
-        return cds_curve(date, get_cds_quote(date), swap_curve(date, get_irs_quote(date)))
-    
-    def pricing(self, discount_curve, cds_curve):
-        # processing
-        todays_date = ql.Date(self.date.day, self.date.month, self.date.year)
-        discount_curve_handle = ql.YieldTermStructureHandle(discount_curve)
-
-        schedule = ql.Schedule(todays_date,
-                                self.maturity_date,
-                                self.tenor,
-                                self.calendar,
-                                self.convention,
-                                self.convention,
-                                self.dateGeneration,
-                                self.endOfMonth
-                            )
-
-        cds = ql.CreditDefaultSwap(self.position,
-                                   self.notional,
-                                   self.spread/1000,
-                                   schedule,
-                                   self.convention,
-                                   self.dayCount
-                                    )
-        
-        probability = ql.DefaultProbabilityTermStructureHandle(cds_curve)
-
-        engine = ql.MidPointCdsEngine(probability=probability,
-                                      recoveryRate=self.recovery_rate,
-                                      discountCurve=discount_curve_handle
-                                    )
-        
-        cds.setPricingEngine(engine)
-        
-        npv = cds.NPV()
-
-        return npv
-    
-    def ir_delta(self):
-        curve_handle = ql.YieldTermStructureHandle(self.discount_curve_t0)
-
-        # 1bp
-        basis_point = 0.0001
-
-        # CDS price when 1bp up
-        up_curve = ql.ZeroSpreadedTermStructure(curve_handle, ql.QuoteHandle(ql.SimpleQuote(basis_point)))
-        up_cds = self.pricing(up_curve, self.cds_curve_t0)
-
-        # CDS price when 1bp down
-        down_curve = ql.ZeroSpreadedTermStructure(curve_handle, ql.QuoteHandle(ql.SimpleQuote(-basis_point)))
-        down_cds = self.pricing(down_curve, self.cds_curve_t0)
-
-        # interest rate delta
-        return (up_cds - down_cds) / 2
-    
-    def credit_delta(self):
-        _cds_quote = get_cds_quote(self.date)
-
-        # CDS price when 1bp up
-        _cds_quote['Market.Mid'] += 1
-        up_curve = cds_curve(self.date, _cds_quote, self.discount_curve_t0)
-        up_cds = self.pricing(self.discount_curve_t0, up_curve)
-
-        # CDS price when 1bp down
-        _cds_quote['Market.Mid'] -= 1
-        down_curve = cds_curve(self.date, _cds_quote, self.discount_curve_t0)
-        down_cds = self.pricing(self.discount_curve_t0, down_curve)
-
-        # credit delta
-        return (up_cds - down_cds) / 2
-
-    def theta(self):
-        price_t0 = self.pricing(self.discount_curve_t0, self.cds_curve_t0)
-
-        discount_curve_t1 = self.discount_curve(self.date + datetime.timedelta(days=1))
-        cds_curve_t1 = self.cds_curve(self.date + datetime.timedelta(days=1))
-        price_t1 = self.pricing(discount_curve=discount_curve_t1, cds_curve=cds_curve_t1)
-
-        theta = price_t1 - price_t0
-
-        return theta
-
-## build CDS contract information
-todays_date = datetime.date(2020, 12, 11)
-maturity_date = datetime.date(2025, 12, 11)
-
-notional = 10000000
-spread = 20.5241
-recovery = 0.4
-position = 'short'
-
-# build CDS object
-cds = CDS(
-        today=todays_date,
-        maturity_date=maturity_date,
-        spread=spread,
-        recovery=0.4,
-        notional=notional,
-        position=position
-        )
-
-# Print result
-print("price of CDS = {}".format(round(cds.npv,4)))
-print("IR Delta = {}".format(round(cds.ir_delta,4)))
-print("Credit Delta = {}".format(round(cds.credit_delta,4)))
-print("Theta = {}".format(round(cds.theta,4)))
+with valuation_date():
+    discount, _, _ = curves()
+    discount_handle = ql.YieldTermStructureHandle(discount)
+    tenors, spreads = [1, 3, 5], [.008, .011, .014]
+    helpers = [ql.SpreadCdsHelper(
+        s, ql.Period(y, ql.Years), 0, CAL,
+        ql.Quarterly, ql.Following, ql.DateGeneration.Forward,
+        ql.Actual360(), .40, discount_handle)
+        for y, s in zip(tenors, spreads)]
+    hazard = ql.PiecewiseFlatHazardRate(
+        DATE, helpers, ql.Actual365Fixed())
+    hazard.survivalProbability(DATE + ql.Period("5Y"))
+    errors = [h.impliedQuote() - s for h, s in zip(helpers, spreads)]
+    assert max(abs(e) for e in errors) < 1e-8
+    survival = [hazard.survivalProbability(DATE + ql.Period(y, ql.Years))
+                for y in range(6)]
+    assert all(0 < q <= 1 for q in survival)
+    assert all(a >= b for a, b in zip(survival, survival[1:]))
+    print([round(1e4 * h.impliedQuote(), 6) for h in helpers])
+# [80.0, 110.0, 140.0]
 ```
 
+The [executed notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/11-credit-default-swaps/study.ipynb) then constructs `CreditDefaultSwap` and attaches `MidPointCdsEngine`. It exposes the complete ticket arguments, including accrued premium on default, payment at default, protection from the reference date, no accrual rebate and zero cash-settlement days.
 
+![Calibrated risk-neutral survival and premium versus protection leg values for an illustrative CDS.](/assets/post_image/renovated/ficc/11-credit-default-swaps.png)
+*Constructed spreads and 40% recovery; the positive protection-buyer PV belongs to a deliberately off-market 100 bp ticket.*
+
+## Reconcile the ticket, not just the helpers
+
+| Five-year ticket quantity | Result per 100 notional |
+|---|---:|
+| Premium paid, including accrued-on-default | 4.406400 |
+| Protection received | 6.165073 |
+| Buyer value | 1.758672 |
+| Ticket fair running spread | 139.911772 bp |
+
+The displayed values are rounded independently. The notebook reconstructs scheduled survival-weighted premiums, accrued premium at the midpoint of each default interval, and loss-given-default payments at that midpoint. Each leg and total PV agree with the engine within $10^{-10}$. Repricing the same ticket at its own fair spread gives zero value within that tolerance.
+
+The fair ticket spread differs slightly from the five-year helper's 140 bp. The separate ticket's complete conventions are not asserted to equal every helper convention. That distinction prevents an unexplained difference from being mislabeled a calibration failure or a credit trading opportunity.
+
+The [QuantLib midpoint engine](https://github.com/lballabio/QuantLib/blob/master/ql/pricingengines/credit/midpointcdsengine.cpp) approximates default timing within each accrual interval. This exercise validates that declared calculation, not the [ISDA Standard Model](https://www.cdsmodel.com/) or standard IMM contracts. All quotes remain illustrative; there is no issuer-specific credit inference or executable bid/ask comparison. The next substantive extension would need actual contract conventions, sourced credit quotes and a benchmark model comparison before claiming market accuracy.
+
+[Read the topic note](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/11-credit-default-swaps/README.md) · [Explore the executed notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/11-credit-default-swaps/study.ipynb) · [Browse all QuantLib desk examples](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/README.md)

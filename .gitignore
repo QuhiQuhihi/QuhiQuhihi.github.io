@@ -19,3 +19,13 @@ vendor
 # npm dependencies
 node_modules
 package-lock.json
+
+# Local research and assistant instructions
+AGENTS.md
+AGENTS*.md
+CODEX.md
+CODEX*.md
+*AGENT*INSTRUCTIONS*.md
+RENOVATION_*.md
+.codex/
+.agents/

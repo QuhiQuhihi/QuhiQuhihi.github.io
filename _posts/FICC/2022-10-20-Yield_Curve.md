@@ -1,198 +1,71 @@
 ---
-title: Yield Curve
-author:
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+title: "Yield curves in QuantLib: from par quotes to cash-flow discounting"
+author: daham
 date: 2022-10-20 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [FICC Quant]
-tags: [investment, derivative]
+tags: [investment, derivatives, QuantLib]
 render_with_liquid: false
-use_math: true
 math: true
 ---
 
-This post is about rate curve of treasury market. Data will be scaped from wsj site and quantlib library will be used.
+A yield curve earns its place on a FICC desk by pricing dated cash flows consistently. The useful question is not how smoothly a line connects quoted rates. It is **which instruments the curve reproduces, and what discount factors and forwards those instruments imply**.
 
-## What is Discount rate in finance?
-One of the most important role of quant is to price financial products. In main street, cost which are shown in accounting report is one of the most important factor for pricing products they are selling. However, cost in financial product is ambigous. Recall finance 101, you might learned about Time Value of Money(TVM). TVM can be found at BA2-plus calculator. In here, we discount future cash flow, value to present value.   
+The maintained example builds a curve from ten illustrative OIS par quotes. Its one-year par quote is 3.80%, yet its continuously compounded zero rate is approximately 3.780411%. Both are correct for their stated conventions. Treating the par quote as a zero rate would change the instrument being priced.
 
-When we calculate PV, we multiply future CF with discount rate. Recall finance 101, when you calculate this, discount rate was given in your question. However, in real world what is that number?  Answer to this question is interest rate which can be found at bond market. Just like stock market (NYSE, NASDAQ), bond markets are continous and make real-time number. You can use that number to price your financial product.
+## Three objects with different meanings
 
-## Why do we need curve?
-Some might wonder, why we need curve instead of bond yield which can be shown at bloomberg terminal or yahoo finance. Answer to this question is the concept of "continous compounding". Bond yield you can get from market is discret. Please click below link.   
-[DATA](https://www.wsj.com/market-data)   
-If you clik above url, you can go to Wall Street Journal market data page. Only bond yield you can get at bond tab are 1-month, 3-month, 6-month, 1-year, 2-years, 3-years, 5-years, 7-years, 10-years, 30-years.   
-If you want to price bond which has maturity of 12 years, what number you would use? Hmm.... Very difficult. You can clearly say 10-years, 30-years maturity bond yields. But 12 years maturity bond yield is difficult to answer. In here, the most optimal approach to this situation is approximation. Use piexewise informations, you can draw lines connecting dots and approximate 12 years maturity bond's yield.
+A discount factor $D(0,t)$ is today's value of one unit paid at date $t$. A continuously compounded zero rate summarizes that factor as
 
-## Inverted discount curve
-Initial post is written at Oct, 2022. These days, yield curve is inverted. Interest rate for long maturity bond is lower than interest rate for short maturity bond. This phenomenon is uncommon. It only happens when macro economy is at severe recession and all people reluctant to invest money. So this can be signal for comming recession. If rate curve are back to normal, I will update this part.
+$$D(0,t)=e^{-z(t)t}.$$
 
-## Result with real market data
+A simple forward rate for an accrual interval follows from two discount factors:
 
-```yaml
-             days  price  coupon   discount factor   zero rate
-maturity                       
-2022-10-25     27   2.53    0.0     0.998133        0.025425
-2022-12-29     92  3.301    0.0     0.992677        0.029375
-2023-03-30    183  3.914    0.0     0.982763        0.034982
-2023-09-07    344  3.803    0.0     0.964756        0.038435
-2024-09-30    733  4.204   4.25     0.918859        0.042629
-2025-09-15   1083  4.216    3.5     0.902767        0.034806
-2027-09-30   1828  4.013  4.125     0.814004        0.041538
-2029-09-30   2559  3.911  3.875     0.764772        0.038650
-2032-08-15   3609  3.773   2.75     0.772329        0.026319
-2052-08-15  10914  3.707    3.0     0.407590        0.030263
-```
+$$F(t_1,t_2)=\frac{D(0,t_1)/D(0,t_2)-1}{\tau(t_1,t_2)}.$$
 
-![RATE](/assets/img/post_image/FICC/yield_curve/discount_curve.png)
-![RATE](/assets/img/post_image/FICC/yield_curve/zero_curve.png)
+A par coupon rate instead makes a specified instrument's initial value zero or its bond price par. It depends on the whole payment schedule. The year fraction used to report a zero rate need not equal the accrual convention used for a coupon or forward. That distinction is a contract choice, not rounding noise.
 
+## Build the instrument helpers first
 
-## Getting bond data
-You can get  bond market data from Wall Street Journal. If you use python, you can use BeautifulSoup library to scrap data.
+The constructed inputs are dated **15 September 2026**, cover 1–10 years, and use OIS helpers with a SOFR index. They are **illustrative quotes, not a retrieved SOFR swap surface**. The US GovernmentBond calendar and Modified Following payment adjustment are explicit. The primary curve interpolates log discount factors; zero rates are reported on Actual/365 Fixed and the annual simple forwards use Actual/360.
 
-## Scrap data from WSJ
+This compact example mirrors the discount-curve construction in the maintained pricing module. Run it from the project root. Calling a discount factor triggers QuantLib's lazy bootstrap before helper residuals are requested.
+
 ```python
-import numpy as np
-import pandas as pd
-import datetime
-import requests
+import QuantLib as ql
+from research.pricing import DATE, CAL, fixture, valuation_date
 
-from bs4 import BeautifulSoup
-
-def get_quote(reference_date):
-    tenors = ['01M', '03M', '06M', '01Y', '02Y', '03Y','05Y','07Y','10Y','30Y']
-
-    # create empty lists
-    maturities = []
-    days = []
-    prices = []
-    coupons = []
-    headers = {'User-Agent': 'Mozilla/5.0'}
-
-    # get market informations
-    for i, tenor in enumerate(tenors):
-        url = "https://www.wsj.com/market-data/quotes/bond/BX/TMUBMUSD"+tenor+"?mod=md_bond_overview_quote"
-        req = requests.get(url, headers=headers)
-        html = req.text
-        soup = BeautifulSoup(html, 'html.parser')
-
-        # Price 
-        data_src = soup.find("span", id="quote_val") 
-        price = data_src.text
-        price = float(price[:-1])
-    
-        data_src2 = soup.find_all("span", class_="data_data")
-
-        # Coupon
-        coupon = data_src2[2].text
-        if coupon != '':
-            coupon = float(coupon[:-1])
-        else:
-            coupon = 0.0
-        
-        # Maturity Date
-        maturity = data_src2[3].text
-        maturity = datetime.datetime.strptime(maturity, '%m/%d/%y').date()
-
-        # Send to lists
-        days.append((maturity - reference_date).days)
-        prices.append(price)
-        coupons.append(coupon)
-        maturities.append(maturity)
-    
-    # create dataframe
-    df = pd.DataFrame([maturities, days, prices, coupons]).transpose()
-    headers = ['maturity', 'days', 'price', 'coupon']
-    df.columns = headers
-    df.set_index('maturity', inplace=True)
-
-    return df
-
-ref_date = get_date()
-quote = get_quote(ref_date)
-print(quote)
+with valuation_date():
+    quotes = fixture()
+    helpers = [ql.OISRateHelper(
+        0, ql.Period(int(row.years), ql.Years),
+        float(row.ois_rate), ql.Sofr(),
+        paymentConvention=ql.ModifiedFollowing,
+        paymentCalendar=CAL) for row in quotes.itertuples()]
+    curve = ql.PiecewiseLogLinearDiscount(
+        DATE, helpers, ql.Actual365Fixed())
+    curve.discount(curve.maxDate())
+    errors = [h.impliedQuote() - float(q)
+              for h, q in zip(helpers, quotes.ois_rate)]
+    assert max(abs(e) for e in errors) < 1e-8
+    one_year = CAL.advance(DATE, ql.Period(1, ql.Years))
+    print(round(curve.discount(one_year), 6))
+# 0.962902
 ```
 
-## Let's code this idea
-Full code can be found at below link.
-[CODE](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/2_yield_curve.ipynb)
+A rate helper contains more than a number. It describes a quoted instrument, including its dates and conventions, whose theoretical quote the bootstrap must reproduce. [QuantLib's reference documentation](https://www.quantlib.org/docs.shtml) is the API starting point; the project exposes the full helper configuration and pinned input file.
 
-## Full Code
-```python
-def treasury_curve(date, quote):
-    
-    # Divide Quotes
-    tbill = quote[0:4]
-    tbond = quote[4:]
-    
-    # Set Evaluation Date
-    eval_date = ql.Date(date.day, date.month, date.year)
-    ql.Settings.instance().evaluationDate = eval_date
-    
-    # Set Market Conventions
-    calendar = ql.UnitedStates()
-    convention = ql.ModifiedFollowing
-    day_counter = ql.ActualActual()
-    end_of_month = False
-    fixing_days = 1
-    face_amount = 100
-    coupon_frequency = ql.Period(ql.Semiannual)
-    
-    # Construct Treasury Bill Helpers
-    bill_helpers = [ql.DepositRateHelper(ql.QuoteHandle(ql.SimpleQuote(r/100.0)),
-                                         ql.Period(m, ql.Days),
-                                         fixing_days,
-                                         calendar,
-                                         convention,
-                                         end_of_month,
-                                         day_counter)
-                    for r, m in zip(tbill['price'], tbill['days'])]
-    
-    # Construct Treasury Bond Helpers
-    bond_helpers = []
-    for p, c, m in zip(tbond['price'], tbond['coupon'], tbond['days']):
-        termination_date = eval_date + ql.Period(m, ql.Days)
-        schedule = ql.Schedule(eval_date,
-                               termination_date,
-                               coupon_frequency,
-                               calendar,
-                               convention,
-                               convention,
-                               ql.DateGeneration.Backward,
-                               end_of_month)
-        bond_helper = ql.FixedRateBondHelper(ql.QuoteHandle(ql.SimpleQuote(100)),
-                                             fixing_days,
-                                             face_amount,
-                                             schedule,
-                                             [c/100.0],
-                                             day_counter,
-                                             convention)
-        bond_helpers.append(bond_helper)
-    
-    # Bind Helpers
-    rate_helper = bill_helpers + bond_helpers
-    
-    # Build Curve
-    yc_linearzero = ql.PiecewiseLinearZero(eval_date, rate_helper, day_counter)
-    
-    return yc_linearzero
+![Par quotes, continuous zero rates and one-year simple forwards from the same illustrative OIS curve.](/assets/post_image/renovated/ficc/02-yield-curves.png)
+*All three series use the same constructed quote set. They answer different pricing questions and are not competing estimates of one identical rate.*
 
-def discount_factor(date, curve):
-    # returns discount factors of each day
-    # use quantlib date type
-    print(date)
-    date = ql.Date(date.day, date.month, date.year)
-    return curve.discount(date)
+## Read the curve before interpreting it
 
-def zero_rate(date, curve):
-    date = ql.Date(date.day, date.month, date.year)
-    day_counter = ql.ActualActual()
-    compounding = ql.Compounded
-    freq = ql.Continuous
-    zero_rate = curve.zeroRate(date, day_counter, compounding, freq).rate()
-    return zero_rate
+At ten years, the par quote is **3.43%**, the continuous zero rate is **3.407709%**, and the last annual simple forward is **3.322811%**. That difference reflects instrument aggregation and conventions. Discount factors are positive throughout the covered range. The example does not require extrapolation beyond the available maturities.
 
-```
+The combined discount/projection calibration in the project has maximum quote error about $3.88\times10^{-14}$ in decimal rate units, below its declared $10^{-8}$ tolerance. Repricing inputs establishes internal consistency. Independent cash-flow calculations elsewhere in the project provide another validation layer; neither test converts constructed inputs into observations.
 
+Curve inversion is a separate interpretation question. The [curve-inversion notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/03-curve-inversion/study.ipynb) has an illustrative 10Y-minus-2Y zero spread of **−27.3106 bp**. A parallel zero-rate shift leaves that spread unchanged, while a shape shock changes it. This is a controlled identity check, not a recession forecast. A historical forecasting claim would require dated observations, a target, a decision-time information set and chronological evaluation.
 
+The practical extension is [projection versus discounting](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/06-swap-curves): once a floating index has its own projection curve, a single universal rate curve is no longer enough to describe both coupon forecasts and present values. The [quotes and handles lab](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/12-quotes-handles-risk) then shows how a stored instrument reacts to changed curve inputs.
+
+[Read the topic note](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/02-yield-curves/README.md) · [Explore the executed notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/02-yield-curves/study.ipynb) · [Browse all QuantLib desk examples](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/README.md)

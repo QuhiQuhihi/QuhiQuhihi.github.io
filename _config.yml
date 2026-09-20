@@ -180,6 +180,13 @@ compress_html:
     envs: [development]
 
 exclude:
+  - AGENTS.md
+  - "**/AGENTS*.md"
+  - "**/CODEX*.md"
+  - "**/*AGENT*INSTRUCTIONS*.md"
+  - "RENOVATION_*.md"
+  - .codex
+  - .agents
   - '*.gem'
   - '*.gemspec'
   - tools

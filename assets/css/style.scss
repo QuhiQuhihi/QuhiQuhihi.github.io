@@ -1,0 +1,24 @@
+---
+---
+
+$tab-count: {{ site.tabs | size | plus: 1 }};
+
+@import 'jekyll-theme-chirpy';
+
+/* Let the research reading guide wrap its descriptions on smaller screens. */
+.table-wrapper > table.research-index-table {
+  width: 100%;
+  table-layout: fixed;
+
+  th,
+  td {
+    white-space: normal;
+    overflow-wrap: break-word;
+    vertical-align: top;
+  }
+
+  th:first-child,
+  td:first-child {
+    width: 32%;
+  }
+}

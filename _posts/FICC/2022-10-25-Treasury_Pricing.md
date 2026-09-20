@@ -1,138 +1,69 @@
 ---
-title: Treasury Pricing
-author:
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+title: "Bond valuation in QuantLib: coupons, settlement and accrued interest"
+author: daham
 date: 2022-10-25 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [FICC Quant]
-tags: [investment, derivative]
+tags: [investment, derivatives, QuantLib]
 render_with_liquid: false
-use_math: true
 math: true
 ---
 
-This post is about pricing treasury in bond market. Data will be scaped from WSJ site and quantlib library will be used. 
+A bond valuation should be explainable one payment at a time. If a model reports a clean price, the next questions are which cash flows remain, when they settle, how they accrue, and what curve discounts them. This post develops that workflow with a **synthetic fixed-rate USD bond**, retaining the bond-pricing purpose of the original article without implying that the example is an observed Treasury security.
 
-## What is Treasury and how to price it?
-Treasury price can be calculated with yield curve. When you buy treasury, you can see how much money they will pay and when they will pay. Since credit score of tresury is AAA, you don't have to worry about default probability. Government is most credible institution in countries. So just discount future cashflow is needed. 
+Under the constructed primary curve, the bond is worth **103.195569 per 100 face** on 15 September 2026. QuantLib and an independently reconstructed cash-flow sum agree. The useful result is the reconciliation: readers can follow the price back to a schedule and a set of assumptions.
 
-How to valuate it is simple. it is just discount expected cashflow with interest rate. Coupon is cash payments which are given before maturity. And notional amount is cash payment which are given at the time of maturity. Price of treasury is discounted value of expected coupons and notional amount. 
+## Translate a ticket into dated payments
 
-## Prequisite
-If you have time to follow this series, please go to 
-[Yield_Curve_Post](https://quhiquhihi.github.io/posts/Yield_Curve)
-to make own yield curve module. This notebook simply import curve from library.
+The bond has face value 100, a 4% annual coupon paid semiannually, an unadjusted schedule start of 15 March 2026 and maturity of 15 September 2033. Modified Following moves the schedule start to 16 March; the builder does not separately set an issue date. The example uses Actual/Actual ISMA accrual and the US GovernmentBond calendar. Settlement is zero days to align the valuation date, settlement date and independent present-value calculation.
+
+For a settlement date $s$, the general cash-flow expression is
+
+$$P_{dirty}(s)=\sum_{t_i>s}CF_i\frac{D(0,t_i)}{D(0,s)},\qquad P_{clean}(s)=P_{dirty}(s)-AI(s).$$
+
+Here $D(0,s)=1$ because settlement is the curve reference date. Reference-date and earlier payments are excluded consistently. For a different settlement convention, simply comparing a reference-date NPV with a settlement-date quoted price can create an apparent discrepancy even when both calculations are internally correct.
+
+Accrued interest compensates for the contractual coupon accrual since the last coupon date. A clean price removes it for quotation; a dirty price includes it. Neither is a separate valuation theory.
+
+## Inspect the QuantLib instrument and the independent ledger
+
+The following runnable excerpt uses the maintained project's curve and bond builders. Run it from the project root. `bond()` constructs a `FixedRateBond`, attaches a `DiscountingBondEngine`, and separately reconstructs coupon amounts and principal from the schedule.
+
 ```python
-from quant_lib import curve as cv
-```
-If you don't want to make your own library, go to this link and download and place it appripriate directory. 
-[Yield_Curve_Code](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/quant_lib/curve.py) 
+from research.pricing import valuation_date, curves, bond
 
-
-
-## Result with real market data
-market data fof treasury. Using discount factor and yield curve, you can make pricing for treasury.
-```yaml
-             days  price  coupon   discount factor   zero rate
-maturity                       
-2022-10-25     27   2.53    0.0     0.998133        0.025425
-2022-12-29     92  3.301    0.0     0.992677        0.029375
-2023-03-30    183  3.914    0.0     0.982763        0.034982
-2023-09-07    344  3.803    0.0     0.964756        0.038435
-2024-09-30    733  4.204   4.25     0.918859        0.042629
-2025-09-15   1083  4.216    3.5     0.902767        0.034806
-2027-09-30   1828  4.013  4.125     0.814004        0.041538
-2029-09-30   2559  3.911  3.875     0.764772        0.038650
-2032-08-15   3609  3.773   2.75     0.772329        0.026319
-2052-08-15  10914  3.707    3.0     0.407590        0.030263
+with valuation_date():
+    discount, _, _ = curves()
+    instrument, flows = bond(discount)
+    independent_pv = flows.pv.sum()
+    assert abs(independent_pv - instrument.NPV()) < 1e-8
+    assert abs(instrument.cleanPrice() + instrument.accruedAmount()
+               - instrument.dirtyPrice()) < 1e-10
+    print(round(instrument.cleanPrice(), 6))
+    print(flows[["date", "amount", "discount", "pv"]].tail(2))
+# Clean price: 103.195569
 ```
 
-for example, let's price treasury. Information of treasury is below.
-```yaml
-issueDate = 30/9/2022
-maturityDate = 15/8/2032
-tenor = semi-annual
-coupon rate = 1.75%
-face value = 100
-settlement days = first date of month
+The notebook's first calculation checks more than a second engine call: it builds the amounts from accrual fractions and multiplies them by dated discount factors. Inspect the last payment carefully. It contains both the final coupon and principal; forgetting either changes the price materially.
 
-Bond Price = 91.7212
+![Discounted coupons and final principal for the synthetic bond.](/assets/post_image/renovated/ficc/04-bond-valuation.png)
+*Present value per 100 face under the illustrative 15 September 2026 curve. The final payment combines 100 principal and a 2-unit coupon.*
 
-Projected cashflow
- Date          CashFlow
- 15/2/2023     0.661644
- 15/8/2023     0.867808
- 15/2/2024     0.881602
- 15/8/2024     0.870219
- 18/2/2025     0.894754
- 15/8/2025     0.853425
- 17/2/2026     0.891781
- 17/8/2026     0.867808
- 16/2/2027     0.877397
- 16/8/2027     0.867808
- 15/2/2028     0.876808
- 15/8/2028     0.870219
- 15/2/2029     0.880371
- 15/8/2029     0.867808
- 15/2/2030     0.882192
- 15/8/2030     0.867808
- 18/2/2031     0.896575
- 15/8/2031     0.853425
- 17/2/2032     0.891165
- 16/8/2032     0.865437
- 16/8/2032   100.000000
-```
+## Why two valuation dates help
 
+The primary valuation falls on a coupon date, so accrued interest is zero. That is useful for an initial reconciliation but insufficient to demonstrate the clean/dirty distinction. The notebook therefore includes a separate **15 October 2026 convention exercise**, with a newly anchored flat continuous 3.5% curve.
 
+| Exercise | Clean price | Accrued interest | Dirty price |
+|---|---:|---:|---:|
+| September primary curve | 103.195569 | 0.000000 | 103.195569 |
+| October flat-curve example | 102.835757 | 0.331492 | 103.167249 |
 
-## Let's code this idea
-Full code can be found at below link.
-[CODE](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/4_treasury_pricing.ipynb)
+Both rows satisfy clean plus accrued equals dirty. The October row is not a holding-period return or a modeled path for the September curve: it changes the valuation date and deliberately supplies a separate curve. That separation prevents a convention illustration from being mistaken for an investment result.
 
-## Full Code
-```python
-import numpy as np
-import pandas as pd
-import QuantLib as ql
+The independent primary bond-PV discrepancy is approximately $2.84\times10^{-14}$ currency units. In a separate controlled comparison, changing coupon accrual to Actual/360 increases PV by **0.360369 per 100 face**. The example therefore distinguishes negligible numerical error from a substantive change in the contract definition.
 
-from calendar import calendar
-from sqlite3 import Date
+This bond has no credit, liquidity, tax or embedded-option spread. An observed Treasury CUSIP would require its actual schedule, settlement and quotation conventions, dated market inputs and appropriate source rights. A corporate bond would additionally require a defensible spread treatment. The present result establishes conditional numerical valuation, not a market fair-value claim.
 
-from quant_lib import curve as cv
+Continue with [bond risk and hedging](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/05-bond-risk) to see why the maturity distribution in the chart matters for sensitivity, or with [CDS hazard calibration](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/11-credit-default-swaps) to examine default-contingent cash flows separately.
 
-ref_date = cv.get_date()
-quote = cv.get_quote(ref_date)
-print(quote)
-curve = cv.treasury_curve(ref_date, quote)
-
-# Convert into Engine
-spotCurveHandle=ql.YieldTermStructureHandle(curve)
-bondEngine=ql.DiscountingBondEngine(spotCurveHandle)
-
-issueDate=ql.Date(30,9,2022)
-maturityDate=ql.Date(15,8,2032)
-tenor=ql.Period(ql.Semiannual)
-calendar=ql.UnitedStates()
-convention=ql.ModifiedFollowing
-dateGeneration=ql.DateGeneration.Backward
-monthEnd=False
-schedule=ql.Schedule(issueDate, maturityDate, tenor,
-                    calendar, convention, convention,
-                    dateGeneration, monthEnd)
-dayCount=ql.ActualActual()
-couponRate=[0.0175]
-settlementDays=1
-faceValue=100
-
-fixedRateBond=ql.FixedRateBond(settlementDays, faceValue, schedule, couponRate, dayCount)
-
-# conduct pricing
-fixedRateBond.setPricingEngine(bondEngine)
-
-# Result
-print("Bond Price = {}".format(round(fixedRateBond.NPV(),4)))
-for cf in fixedRateBond.cashflows():
-    print('%20s %12f' % (cf.date(), cf.amount()))
-```
-
-
+[Read the topic note](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/04-bond-valuation/README.md) · [Explore the executed notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/04-bond-valuation/study.ipynb) · [Browse all QuantLib desk examples](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/README.md)

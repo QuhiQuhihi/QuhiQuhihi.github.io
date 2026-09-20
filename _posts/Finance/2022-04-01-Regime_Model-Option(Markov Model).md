@@ -1,9 +1,8 @@
 ---
-title: Regime Switching Model for Option Market 
-author:
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+title: "Regime Switching in Options: From Historical States to Risk-Neutral Prices"
+author: daham
 date: 2024-05-10 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [Financial Market]
 tags: [regime model, statistics, derivatives]
 render_with_liquid: false
@@ -11,213 +10,76 @@ use_math: true
 math: true
 ---
 
-This post is review of "Option Pricing with Markov Switching” by Cheng-Der Fuh, Kwok Wah Remus Ho, Inchi Hu and Ren-Her Wang. This paper introduce Regime Switching Model using Hidden Markov Model for option market. 
+A high-volatility state estimated from historical returns can help describe market risk. Turning that state into an option price requires another ingredient: **the price investors assign to future regime uncertainty**. A historical transition matrix alone does not determine this price.
 
-## What is Regime Switching Model
-Financial market volatility is known to fluctuate over time, often exhibiting persistent changes known as volatility clustering. Empirical research has identified various stylized facts about volatility, leading to the development of models that aim to capture these dynamics. Recent events such as COVID-19, combined with periods of quantitative easing and tightening, have caused radical regime shifts in financial markets, resulting in extreme movements, especially in the options market.
+This article revisits *Option Pricing with Markov Switching* by **Cheng-Der Fuh, Kwok Wah Remus Ho, Inchi Hu, and Ren-Her Wang**, published in the *Journal of Data Science* in 2012. The authors develop European-call pricing with finite-state switching and compare discrete-diffusion and Markovian-tree calculations. Their paper remains the source of the option-model discussion; my renovated project contributes a separate historical risk-forecast experiment. It has not calibrated this option model or reproduced the paper's numerical tables. [Original article and PDF](https://jds-online.org/journal/JDS/article/536).
 
-Traditional models like ARCH, GARCH, and stochastic volatility models have been employed to capture changing volatility. However, **Regime-Switching Models**, particularly those using **Hidden Markov Models (HMMs)**, offer a robust framework for modeling the sudden shifts observed in financial markets.
+## Two questions, two probability measures
 
-Before the COVID-19 pandemic, the VIX index indicated a relatively stable volatility environment. However, post-pandemic, the market entered a high-volatility regime that persisted for an extended period.
+For historical risk, the question is what is likely to happen under the physical probability measure $P$. A switching diffusion might be written
 
+$$
+\frac{dS_t}{S_t}=\mu_{Z_t}\,dt+\sigma_{Z_t}\,dW_t^P,
+$$
 
-## Literature Review: The Power of Regime-Switching Models
-Regime-switching models were first introduced by **Hamilton (1988, 1989)** to incorporate time-varying volatility into financial modeling. Key contributions include:
+where $Z_t$ is a finite-state Markov chain. Estimation from returns concerns the drift, volatility, and transitions under $P$.
 
-- **Hamilton (1989)**: Developed a framework using Markov-switching models to capture changes in economic regimes.
-- **Di Masi et al. (1994)**: Studied European call option pricing in a diffusion model where drift and volatility are governed by a two-state Markov process.
-- **Guo (2001)**: Provided a closed-form solution for option pricing under regime-switching models.
-- **Maghrebi et al. (2007)**: Demonstrated that Markov-switching models effectively adjust forecast errors and capture nonlinear volatility expectations, offering solutions to market overreactions and underreactions.
+For valuation, the question is how to discount a contingent payoff consistently with a chosen pricing measure $Q$. With constant interest rate $r$, zero dividends, and a specified risk-neutral state process, a state-conditional European call has value
 
-These models are particularly effective in capturing the nonlinear dynamics and regime shifts observed in financial markets.
+$$
+C_i(S,T)=e^{-rT}\mathbb E^Q[(S_T-K)^+\mid S_0=S,Z_0=i].
+$$
 
+The stock's risk-neutral drift becomes $r$, while the transition generator also requires specification under $Q$. Adjusting the drift alone does not identify compensation for regime risk. Fuh and coauthors introduce hypothetical change-of-state securities to identify that compensation within their model. Such securities are an assumption of their pricing construction, not instruments observed or calibrated in my repository. See [the paper, Section 2](https://jds-online.org/journal/JDS/article/536/file/pdf).
 
-## Integrating Black-Scholes with Hidden Markov Processes
-In this research, we propose a model that merges the classic **Black-Scholes-Merton (BSM)** framework with a **Hidden Markov Model (HMM)** to address regime-dependent fluctuations in stock prices.
+This distinction prevents an attractive but unsupported shortcut: fitting an HMM to daily prices and inserting its estimated physical transitions into an option pricer as if they were market-implied transitions.
 
-We consider a stock price process \( X_t \) that evolves according to:
+## An occupation-time view of the payoff
 
-$ dX_t = X_t \mu_{\varepsilon(t)} dt + X_t \sigma_{\varepsilon(t)} dW_t $
+The following conditional calculation explains the mechanism without reproducing the paper's full analytical solution. Assume the state process and Brownian motion are independent under the specified pricing measure, and volatility is constant inside each state. Over remaining maturity $T$, define time spent in state $j$ and accumulated variance:
 
-where:
+$$
+\tau_j=\int_0^T\mathbf{1}\{Z_u=j\}\,du,
+\qquad V_T=\sum_j\sigma_j^2\tau_j,
+\qquad \sum_j\tau_j=T.
+$$
 
-- $ \mu_{\varepsilon(t)}$ and $ \sigma_{\varepsilon(t)}$ are the state-dependent drift and volatility parameters.
-- $ \varepsilon(t) $ is a stochastic process representing the unobserved state of the business cycle.
-- $ W_t $ is a standard Brownian motion.
+Conditional on the state path,
 
+$$
+\log S_T=\log S+rT-\tfrac12V_T+\sqrt{V_T}\,\varepsilon,
+\qquad \varepsilon\sim\mathcal N(0,1).
+$$
 
-## States of the Hidden Markov Model
+Its discounted call expectation is therefore
 
-We define a three-state HMM to capture different phases of the business cycle \varepsilon(t):
+$$
+c(V_T)=S\Phi(d_1)-Ke^{-rT}\Phi(d_2),
+\qquad
+d_1=\frac{\log(S/K)+rT+V_T/2}{\sqrt{V_T}},
+\quad d_2=d_1-\sqrt{V_T}.
+$$
 
-- $\varepsilon(t) = 0$ Contraction (Low Volatility), 
-- $\varepsilon(t) = 1$ Transition (Moderate Volatility), 
-- $\varepsilon(t) = 2$ Expansion (High Volatility) 
+Averaging $c(V_T)$ over the risk-neutral state paths yields the call value. The conditional price is nonlinear in accumulated variance, so substituting only its mean generally loses information. This is the economic reason the entire occupation-time distribution matters. The expression also keeps the initial stock price in exactly one place: multiplying by an additional $S$ after already including $\log S$ inside a lognormal mean would double-count it.
 
-A three-state HMM effectively captures the empirical phenomena of financial time series, allowing for more nuanced modeling than a two-state model.
+The occupation-time law includes **point masses for paths that never switch**. A numerical integral using only a smooth density can omit those paths and misprice short maturities. Equal state volatilities give $V_T=\sigma^2T$ for every path and recover the ordinary Black–Scholes value; zero switching reduces the calculation to the initial state's value. These are natural mathematical checks before attempting calibration.
 
+## State uncertainty remains a modeling choice
 
+The paper's observability argument uses ideal continuous observation and distinct local variances. Daily closes provide much less information. In my empirical project, the state remains a probability distribution updated after each close; it is not assigned an economic label such as expansion or recession.
 
-## Major Assumptions
-The model is built on several key assumptions:
+![Historical HMM state probabilities using only past observations and using the full sample](/assets/post_image/renovated/regime/states.png)
 
-1. **Independence**: The state process $ \varepsilon(t) $ is independent of the Brownian motion $ W_t $.
-2. **Fixed Asset Supply**: The total shares of the risky asset are fixed and normalized to 1.
-3. **Risk-Free Rate**: The risk-free asset offers a constant instantaneous rate of return $ r $.
-4. **Finite States**: The state process $ \varepsilon(t) $ is a Markov process with a finite number of states.
-5. **Observability**: Each state has different volatility $ \sigma_{\varepsilon(t)} $, making $ \varepsilon(t) $ effectively observable through market data.
-6. **Exponential Holding Times**: The time spent in each state follows an exponential distribution with rate $ \lambda_i $, i.e., $ P(\tau_i > t) = e^{-\lambda_i t} $ for state $ i $.
+*This original figure comes from the historical equity-risk study. It illustrates information dependence in state inference, not an option-price calibration or a risk-neutral probability estimate.*
 
+The two panels differ on **15.28% of hard labels** after thresholding at 0.5. The full-sample calculation changes both fitted parameters and conditioning information. Using that retrospective state history as a live pricing input would require information unavailable at the original valuation time.
 
+Likewise, a fitted discrete-time transition matrix is not automatically a continuous-time pricing generator. A valid generator must have nonnegative off-diagonal entries and zero row sums; a proposed conversion and its time units require explicit checks. A combined model needs consistent state definitions and observation assumptions while keeping its probability measures distinct.
 
-## Completing the Market: Risk-Neutral Measure
+## What the renovated project establishes
 
-Since the market is incomplete due to the presence of unhedgeable risks from the Markov process $ \varepsilon(t) $, we introduce a **Completing-of-Securities (COS)** contract. This contract pays one dollar at the next state change of $ \varepsilon(t) $.
+The completed experiment uses S&P 500 and long-maturity Treasury fund returns, with training-only scaling, monthly refits, and archived forward filters. On **428 next-session equity risk forecasts from January 2025 through 17 September 2026**, HMM-minus-EWMA mean loss is **+0.2539**, with a 95% block interval of **[−0.1024, +0.8795]**. It does not establish an improvement over the simple volatility baseline. The data are revised historical snapshots; the evaluation is retrospective. [Methods and actual results](https://github.com/QuhiQuhihi/regime_model/blob/main/docs/02-results.md).
 
-### Adjusting for Risk Neutrality
+That finding neither validates nor rejects the option-pricing model: historical forecast loss and risk-neutral pricing error are different endpoints. A useful next option experiment would freeze dated option quotes and conventions, compare prices across strikes and maturities, check put–call parity and numerical convergence, then evaluate hedges on later observations with transaction costs. Parameter stability and bid–ask spreads would determine whether a lower calibration error matters economically.
 
-To ensure absence of arbitrage, we need to find an equivalent **risk-neutral measure** $ Q $. Under $ Q $, the adjusted dynamics of the stock price become:
-
-$ dX_t = X_t r dt + X_t \sigma_{\varepsilon(t)} dW_t^Q $
-
-where $ dW_t^Q $ is a Brownian motion under the risk-neutral measure.
-
-The adjusted transition rates under $ Q $ are:
-
-$\lambda_i^Q = \frac{r}{r + k_i} \lambda_i $
-
-where $ k_i $ is the market price of risk associated with state $ i $.
-
-
-
-
-## Pricing European Call Options Under Regime Switching
-
-The primary goal is to derive the arbitrage-free price of a European call option in this regime-switching framework.
-
-### Theoretical Framework
-
-The arbitrage-free price $ V_i(T, K, r) $ of a European call option, given the initial state $ \varepsilon(0) = i $, is:
-
-$ V_i(T, K, r) = e^{-rT} \mathbb{E}^Q\left[ (X_T - K)^+ \mid \varepsilon(0) = i \right] $
-
-
-where:
-
-- $ T $ is the time to maturity.
-- $ K $ is the strike price.
-- $ \mathbb{E}^Q $ denotes the expectation under the risk-neutral measure.
-
-### Occupation Times
-
-Let $ T_i $ be the occupation time in state $ i $ up to time $ T $. The option price can be expressed as:
-
-$ V_i(T, K, r) = e^{-rT} \int_{0}^{T} \mathbb{E}^Q\left[ (X_T - K)^+ \mid T_i = t \right] f_i(t, T) dt $
-
-where $ f_i(t, T) $ is the probability density function of $ T_i $.
-
-### Stock Price Dynamics Under Risk Neutrality
-
-Under the risk-neutral measure, the log-price $ \ln X_T $ is normally distributed with mean and variance:
-
-$ m(t) &= \ln X_0 + \left( r - \frac{1}{2} \sigma_{\varepsilon(t)}^2 \right) T $ \\
-$ v(t) &= \int_{0}^{T} \sigma_{\varepsilon(s)}^2 ds $
-
-
-
-## Main Result: Closed-Form Option Pricing Formula
-
-Combining the above, the arbitrage-free price of the European call option is:
-
-$ V_i(T, K, r) = e^{-rT} \int_{0}^{T} \left[ X_0 e^{m(t) + \frac{1}{2} v(t)} N(d_1) - K N(d_2) \right] f_i(t, T) dt $
-
-where:
-
-- $ N(\cdot) $ is the cumulative distribution function of the standard normal distribution.
-- $ d_1 $ and $ d_2 $ are given by:
-
-
-$ d_1 &= \frac{m(t) - \ln K + v(t)}{\sqrt{v(t)}} $ \\
-$ d_2 &= d_1 - \sqrt{v(t)} $
-
-
-This formula generalizes the classic Black-Scholes formula to accommodate regime-dependent volatility.
-
-
-### Case of Finite Number of States
-
-For an HMM with \( N \) finite states, the option price becomes:
-
-$ V_i(T, K, r) = e^{-rT} \int_{\mathcal{S}} \left[ X_0 e^{m(\mathbf{t}) + \frac{1}{2} v(\mathbf{t})} N(d_1) - K N(d_2) \right] f_i(\mathbf{t}, T) d\mathbf{t} $
-
-where:
-
-- $ \mathbf{t} = (t_0, t_1, \dots, t_N) $ are the occupation times in each state.
-- $ \mathcal{S} = \{ \mathbf{t} \mid t_0 + t_1 + \dots + t_N = T \} $.
-- $ m(\mathbf{t}) $ and $ v(\mathbf{t}) $ are computed based on the occupation times.
-
-
-## Numerical Methods and Simulation
-
-### Discrete Diffusion Method
-
-This method discretizes the stochastic differential equation (SDE) governing \( X_t \):
-
-$ X_{n+1} = X_n \exp\left( \left( r - \frac{1}{2} \sigma_{\varepsilon_n}^2 \right) \Delta t + \sigma_{\varepsilon_n} \sqrt{\Delta t} \eta_n \right) $
-
-
-where $ \eta_n $ are independent standard normal random variables.
-
-### Markovian Tree Method
-
-This method constructs a recombining tree that accounts for both the stochastic process $ X_t $ and the Markov chain $ \varepsilon(t) $, capturing possible transitions between states at each time step.
-
-
-## Simulation Results
-
-We compared the simulation results with the analytical formula under various scenarios:
-
-### 1. High vs. Low Volatility
-
-Using empirical data to classify high and low volatility regimes, we observed:
-
-- The discrete diffusion method closely approximates the analytical solution in both high and low volatility environments.
-- The Markovian tree method performs comparably but may diverge under certain parameter settings.
-
-### 2. Transition Rates
-
-Different transition rate matrices $ Q $ impact the model's performance:
-
-- When transition rates are similar across states, the discrete diffusion method excels.
-- With varying transition rates, the Markovian tree method shows better accuracy.
-
-### 3. Strike Price and Maturity (Volatility Surface)
-
-The model effectively captures the volatility surface across different strike prices and maturities, aligning with observed market data during events like the COVID-19 pandemic.
-
-
-## Sensitivity Analysis
-
-A sensitivity analysis was conducted to assess the impact of model parameters $ \sigma $ (volatility) and $ \lambda $ (transition rates):
-
-- **Volatility $(\sigma )$**: Higher volatility increases option prices, as expected.
-- **Transition Rates $(\lambda)$**: Faster transitions between states lead to option prices converging across different initial states.
-
-
-## Conclusion
-
-This research enhances traditional option pricing models by integrating a regime-switching framework using Hidden Markov Models. The key contributions include:
-
-- **Enhanced Modeling**: Captures volatility clustering and regime shifts more effectively than constant-volatility models.
-- **Closed-Form Solution**: Provides an analytical formula for European call options under regime switching.
-- **Numerical Methods**: Demonstrates the effectiveness of discrete diffusion and Markovian tree methods in approximating option prices.
-
-### Future Research
-
-Potential directions for future research include:
-
-- **Model Calibration**: Using market data to calibrate the model parameters for real-world applications.
-- **Extension to American Options**: Adapting the framework to price American options or other exotic derivatives.
-- **Incorporating Additional Factors**: Integrating macroeconomic variables or other risk factors into the HMM.
-
-By exploring the dynamics of volatility regime shifts through Hidden Markov Models, we provide a robust framework for understanding risk and return trade-offs in option markets. This approach offers valuable insights for both researchers and practitioners in finance.
+Those option experiments remain **unrun**. Readers can inspect the completed [regime notebook](https://github.com/QuhiQuhihi/regime_model/blob/main/study.ipynb) and [research protocol](https://github.com/QuhiQuhihi/regime_model/blob/main/research/PROTOCOL.md), then return to the original paper for the option-specific derivation. Keeping that boundary explicit makes both the theory and the empirical evidence more useful.

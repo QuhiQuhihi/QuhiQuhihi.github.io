@@ -1,0 +1,895 @@
+{
+  "revision_date": "2026-09-20",
+  "starting_blog_commit": "c7da338efffd944eb57e4910e8e293751aaf2522",
+  "source_projects": {
+    "project_Asset_Allocation": {
+      "repository": "https://github.com/QuhiQuhihi/project_Asset_Allocation",
+      "commit": "d392f749c7130e6b33682974f3207affdf82f4df"
+    },
+    "project_FICC_Quant": {
+      "repository": "https://github.com/QuhiQuhihi/project_FICC_Quant",
+      "commit": "74f1737263167d225684344e507c8125093bc90d"
+    },
+    "regime_model": {
+      "repository": "https://github.com/QuhiQuhihi/regime_model",
+      "commit": "4c0164ea5a114d865b45bd4b48f40ce72954a7c4"
+    },
+    "SVD_Portfolio_Strategy": {
+      "repository": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy",
+      "commit": "bd527f741b2b998ec4b8fce5aed4786af17e14ba"
+    },
+    "Famma-French-Factors-with-Sector-ETF": {
+      "repository": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF",
+      "commit": "760a183c19f8a3d0e18c5482751bbe327a61680d"
+    }
+  },
+  "posts": [
+    {
+      "path": "_posts/FICC/2022-10-15-Black_Scholes_Merton.md",
+      "sha256": "7343c9e2c97a00759b66c0956125a34f8e2db5ae88f1761eb5fb289cf8abdff6",
+      "original_date": "2022-10-15 12:00:00 +0800",
+      "previous_sha256": "23fd92167f6811ff11430d6f9185fccfbbf0f819e88dd9a83ff0c837031052bd"
+    },
+    {
+      "path": "_posts/FICC/2022-10-20-Yield_Curve.md",
+      "sha256": "aaafadf8d14d77ee4233bc08bfea43db3256d3bc4f22a5f0e2e20995c1841ab0",
+      "original_date": "2022-10-20 12:00:00 +0800",
+      "previous_sha256": "2f799dbb5b04032b49e958549815f75cee7a5212d768107eb62d1ba0c04c7c1b"
+    },
+    {
+      "path": "_posts/FICC/2022-10-25-Treasury_Pricing.md",
+      "sha256": "81422eaf31bb871a1699330cbffb444430adec14c141c7c93f6a430bc34b820f",
+      "original_date": "2022-10-25 12:00:00 +0800",
+      "previous_sha256": "8d71118c8392526d7d0cd830357844a299eb49313b16c0e509f5607d32e1f576"
+    },
+    {
+      "path": "_posts/FICC/2022-10-28-Duration_and_Convexity.md",
+      "sha256": "e935f7d45899e02d61121109f0a8d368e25d7752142c237bd4b7dfeb644d23f8",
+      "original_date": "2022-10-25 12:00:00 +0800",
+      "previous_sha256": "c05bd4bcc77c419d96bae80460b93f3dfeed76f1d8e0a25c7dd9f0d9651dbe1d"
+    },
+    {
+      "path": "_posts/FICC/2022-10-29-Swap_Curve.md",
+      "sha256": "6fd255ea7fd1792ed9a9926b7cb302562cd7b4745272212b19feed5e5bd5f577",
+      "original_date": "2022-10-29 12:00:00 +0800",
+      "previous_sha256": "f8909f37597e9922bede81b001b211f370b2c022d45cd7bb2331d573b7be2500"
+    },
+    {
+      "path": "_posts/FICC/2022-10-30-Interest_Rate_Swap.md",
+      "sha256": "06e006755beb115828a99eef7ceabb443a81f483f5b43acd9a47a540770fdf92",
+      "original_date": "2022-10-30 12:00:00 +0800",
+      "previous_sha256": "755b2c09ecf3310ea3bfaf7e35b9672bbb56ededf85f40259aeb7636d29e163f"
+    },
+    {
+      "path": "_posts/FICC/2022-11-02-Cross_Currency_Swap.md",
+      "sha256": "3b33206063388ce5442a7f1f44095e0b395af672855b57cc98c968855980aabc",
+      "original_date": "2022-11-02 12:00:00 +0800",
+      "previous_sha256": "0d588cb938ba0326b6430e8a078dcbcc55afa9d7be1fad43b439eb7f1eb0bdcd"
+    },
+    {
+      "path": "_posts/FICC/2022-11-05-Credit_Default_Swap.md",
+      "sha256": "800fc5c25dcc028db7055f8de59dac760aafd21ab08cad8aee8505c61745e189",
+      "original_date": "2022-11-05 12:00:00 +0800",
+      "previous_sha256": "0b535e28549d6724ae87e719d573131d85f12d17e8921caac51dd3417837d7b8"
+    },
+    {
+      "path": "_posts/Finance/2022-04-01-Regime_Model(Markov Model).md",
+      "sha256": "eebfcea2dcb9d10ef91633a8ce5e339c0a2e90579a4618f857f147d0e576a714",
+      "original_date": "2022-10-08 12:00:00 +0800",
+      "previous_sha256": "060f0560bef20d0bc4f4c12db92d640d982af2de2a58771a7ef5f63e7e728916"
+    },
+    {
+      "path": "_posts/Finance/2022-04-01-Regime_Model-Option(Markov Model).md",
+      "sha256": "272346c42ff963aa3b0c013c4f37ee788618a2a2dda93bc1b8888f6d247c1a9c",
+      "original_date": "2024-05-10 12:00:00 +0800",
+      "previous_sha256": "923e8762fd18ae8cfc65daf112df7cb51e61f3207a663cdd8326521c29f54e9e"
+    },
+    {
+      "path": "_posts/Finance/2022-04-10-Regime_Model(Gausian Segmentation).md",
+      "sha256": "1d24455c9d6feca4c0190351d48b27c1b77c54e9d3877c20f6ce0528b540c784",
+      "original_date": "2022-10-9 12:00:00 +0800",
+      "previous_sha256": "e66c0fe1e59c01621d4a4ecf34d7e49e06390808c199b8db740998680c62e449"
+    },
+    {
+      "path": "_posts/ML/2024-09-25-SVD_and_Portfolio.md",
+      "sha256": "3a1ed8a89c9b89c8668420033860b30ea3f537f4b0f1493f6b4ed816ea492759",
+      "original_date": "2024-09-25 12:00:00 +0800",
+      "previous_sha256": "3337b745a11896adcc1c493c13b6bb08c27b3fbc641b88d05bb22783518cb516"
+    },
+    {
+      "path": "_posts/Quant/2022-02-20-Risk_Parity.md",
+      "sha256": "124cc6c02209dcc4306968f115f4b0f126e1b61fdb9c7c221b89723a75a51cf3",
+      "original_date": "2022-06-30 12:00:00 +0800",
+      "previous_sha256": "aa351496cf16c930f347329bfda4c7c4018427d4a7fae656d986de1a5ae10650"
+    },
+    {
+      "path": "_posts/Quant/2022-02-21-Mean-Varance.md",
+      "sha256": "f1c523cd61613c5fdcda9be362fe878e1dfadc82d4a17588b41e35f9a73e4995",
+      "original_date": "2022-07-01 12:00:00 +0800",
+      "previous_sha256": "3929d5b1336a317596346a53bfe6d0a4bbff3c554bd55832c45ac6f7992ba425"
+    },
+    {
+      "path": "_posts/Quant/2022-02-22-Hierachical_Risk_Parity.md",
+      "sha256": "8c58e0b52037d58faed609927413235be7588a1e9f351f1f93a1ce8b281eaf0c",
+      "original_date": "2022-07-02 12:00:00 +0800",
+      "previous_sha256": "841bfea5e271e82c28534cf0de529917be61ab32b868f0326068da04d10e460f"
+    },
+    {
+      "path": "_posts/Quant/2022-03-01-Kelly_Rule.md",
+      "sha256": "4d3aa4832e01d2bd7b7e673c9b2afc5c90b09fbd715b5da0c19e76beda1b07f2",
+      "original_date": "2022-07-10 12:00:00 +0800",
+      "previous_sha256": "fe2a8e27da7e75ab9de09e09d47dd719bf0b4abcb9a74fa7ba95e40bed51ad3e"
+    },
+    {
+      "path": "_posts/Quant/2022-03-05-Sector_Momentum.md",
+      "sha256": "5489d67a5bb126e6c8128106f78c12098a70c2b664c4bac243bfb2e89a03d0be",
+      "original_date": "2022-07-15 12:00:00 +0800",
+      "previous_sha256": "02115dfc28b61ba60d90a262c42e6a583e952c0772214cb26b150a0806942ed0"
+    },
+    {
+      "path": "_posts/Quant/2022-03-07-Vigiliant_Asset_Allocation.md",
+      "sha256": "9381e02a9dcf95aae96e32c48ecfba9b3af3d46bde7a302115d0e8c8713e38ef",
+      "original_date": "2022-10-01 12:00:00 +0800",
+      "previous_sha256": "342efd200b07106c815ae3aa8eb40c87a2f7684fb3a539c5cbd8298995b7c1a4"
+    },
+    {
+      "path": "_posts/Quant/2022-03-10-Defensive_Asset_Allocation.md",
+      "sha256": "f35a10767fd896ee75c81de29af533048300525a6efb93e82ed3d3e1844dd38b",
+      "original_date": "2022-10-02 12:00:00 +0800",
+      "previous_sha256": "4552db1047ec7a03799bed513e7e5212766f45c5cc55fcb6f0ade2f2f2df1f83"
+    },
+    {
+      "path": "_posts/Quant/2022-03-15-Maximum_Diversification.md",
+      "sha256": "4c8cbd26b29dc9d16db701dbad435f355cdb86f59a2b6742751b2572d4626f78",
+      "original_date": "2022-10-03 12:00:00 +0800",
+      "previous_sha256": "d3ea8d41cccb2235fd2684fcf46c6cceb355b13d3244cc6713f0b0da3182ee35"
+    },
+    {
+      "path": "_posts/Quant/2022-12-15-Factors_Sector_ETF_Code.md",
+      "sha256": "8377a7abd0876fbac595a9270acebf0fac4a9e291a15c954c9ca4593a8f60bea",
+      "original_date": "2022-12-15 12:00:00 +0800",
+      "previous_sha256": "a353e3d2e913058bd2cac071c89f313f993974433a1aecea9601afbe0aef15eb"
+    },
+    {
+      "path": "_posts/Quant/2022-12-15-Factors_Sector_ETF_Result.md",
+      "sha256": "5559c07de9843829136e3f92748d5c45215e97c7f2791cdcd68af91154dae212",
+      "original_date": "2022-11-05 12:00:00 +0800",
+      "previous_sha256": "506b752ae47a03b250b669ec3e61d7189a58e66cea0802336b632cdc2891ad39"
+    }
+  ],
+  "research_index": {
+    "path": "_tabs/research.md",
+    "sha256": "b0342a22746e65d826f5a8639e02f9b5efdf256581c7855cbc27c6e1fc914ebc"
+  },
+  "figures": [
+    {
+      "path": "assets/post_image/renovated/allocation/mean-variance-frontier.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/01-mean-variance/study.ipynb",
+      "cell_index": 5,
+      "output_index": 0,
+      "sha256": "51f8d474530f9d4469f63cc6b5533e137a9351ecf6296936453cbd1dfba05318",
+      "source_file_sha256": "5e701ceb4525f9f323885a26ecbbb27404f56ac85150a5bc063047f6611b2c82",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/01-mean-variance/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/mean-variance-sensitivity.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/01-mean-variance/study.ipynb",
+      "cell_index": 7,
+      "output_index": 0,
+      "sha256": "24006ec22476ead16cc60f736943f408ebb531f4c6664be0ce24de7369099c11",
+      "source_file_sha256": "5e701ceb4525f9f323885a26ecbbb27404f56ac85150a5bc063047f6611b2c82",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/01-mean-variance/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/risk-parity.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/02-risk-parity/study.ipynb",
+      "cell_index": 5,
+      "output_index": 0,
+      "sha256": "0c46d636c5abfed76221840368ee721ebbc9822d6d958944be26a2f7b2ddeb5a",
+      "source_file_sha256": "441c53389615e21a157223a9901bbe97a1e1aa4e458fd9abde914678446fb602",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/02-risk-parity/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/hierarchical-risk-parity.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/03-hierarchical-risk-parity/study.ipynb",
+      "cell_index": 5,
+      "output_index": 0,
+      "sha256": "9dda8ec053de751752b5ab90fb3b76d5b9ecd0ca5cb9697dc75ea91630dc7f67",
+      "source_file_sha256": "dfcb05dedafa9645f6b32aa9842373c9648f80779cffe2dce65e6dcbf705a58e",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/03-hierarchical-risk-parity/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/kelly-growth.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/04-kelly-growth/study.ipynb",
+      "cell_index": 3,
+      "output_index": 0,
+      "sha256": "143b65bc7ded53865dc66dfb25b3114affff8a0ecb4d8cac98518ae19a7892d1",
+      "source_file_sha256": "4688e4bd3b3e70ec8b4fbd78e20c493d2b7d094b8c6cadd71d6bce8f204fe059",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/04-kelly-growth/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/maximum-diversification.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/05-maximum-diversification/study.ipynb",
+      "cell_index": 5,
+      "output_index": 0,
+      "sha256": "1b40a8e86e4546ad4533d48d6274d22f28067412c5c43af55c3263ac09d1a7d5",
+      "source_file_sha256": "78a92f0a875772baf135e20433181f18af96cb7336046d72359de515220469aa",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/05-maximum-diversification/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/sector-momentum.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/06-sector-momentum/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "09c5d3f09785ed9e27991b8dc4c87f05d5146290c81f30821c84abdd7161e90f",
+      "source_file_sha256": "af05419f91f88dc02972d405f15259911ee60fb406435e7f8779fe636b592cb3",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/06-sector-momentum/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/vigilant-allocation.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/07-vigilant-allocation/study.ipynb",
+      "cell_index": 9,
+      "output_index": 0,
+      "sha256": "5f47756e4dc5d0b16c3a7a896e6de1a50f8693d53aefff77eef9fa2dbcb43f91",
+      "source_file_sha256": "d4d57c7c4d9c4920f9791188661f4501875132557cbc73b3e155d900c8a810c8",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/07-vigilant-allocation/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/defensive-allocation.png",
+      "project": "project_Asset_Allocation",
+      "source": "topics/08-defensive-allocation/study.ipynb",
+      "cell_index": 9,
+      "output_index": 0,
+      "sha256": "568325fc6ab2b797e40533dc08b1e4edbc4cc43bd745ce0ce5a1d7b495490bd4",
+      "source_file_sha256": "397868e5b885ce4c605eadac9ef520b05a9023a110eadbc49170ffb77e2a4781",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/topics/08-defensive-allocation/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/allocation/hrp-incremental.png",
+      "project": "project_Asset_Allocation",
+      "source": "research/figures/incremental.png",
+      "cell_index": null,
+      "output_index": null,
+      "sha256": "b8fdaba98270ec5cb2890077130dcfb4e656ddfcc53883f28ac80de39a3086dc",
+      "source_file_sha256": "b8fdaba98270ec5cb2890077130dcfb4e656ddfcc53883f28ac80de39a3086dc",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/d392f749c7130e6b33682974f3207affdf82f4df/research/figures/incremental.png"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/01-bsm-options.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/01-bsm-options/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "e8db855c1a7b307fc711a12d4bff102e547c2adc34bc84a4438f7b65cf7bca04",
+      "source_file_sha256": "bca5e9ced2701f52d8350270796567161d79165f4d7f2ee4bf7d8d6fedbd3973",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/01-bsm-options/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/02-yield-curves.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/02-yield-curves/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "effd87fd9bf735d33b39a52ed79ed32621ca4c6d1ea1ef2e2e82aeea294de818",
+      "source_file_sha256": "6394fda9d438cc27e3d3e20d632767b412aab5287b6e40abafcd373c9476c426",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/02-yield-curves/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/04-bond-valuation.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/04-bond-valuation/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "a7320042a661bebd496293dbedbb0821fd3a93e80f19cfee65122bdb0aa1dd14",
+      "source_file_sha256": "cf74fd8c6f8296b1b6852d0a0182559ff1e7838879735cf12078f327bee90da1",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/04-bond-valuation/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/05-bond-risk.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/05-bond-risk/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "d40d9df43680323689f867e6f9bf02265948963fb9b462a0a8224b9e1dc1e12d",
+      "source_file_sha256": "f18e92e38e8915832335cebd0a0a7f554e75de4877ae993e02879da9b142f38c",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/05-bond-risk/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/06-swap-curves.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/06-swap-curves/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "07aa646f03dc3b747c492981ab25fb65e923fb6beab960552aaa82ec4432ebea",
+      "source_file_sha256": "f87a117218c649b7728a1ebe43e716ddcbb72118d7988999caa25b7ebbd8b001",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/06-swap-curves/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/08-interest-rate-swaps.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/08-interest-rate-swaps/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "8525541a7410c235d6ee943fdadb82c9b9b859e5109f887788e7cb2d848de890",
+      "source_file_sha256": "790b6db52c8e006f65ac123f35bedac56105bb0d42f573c72683b4c4897e9cc2",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/08-interest-rate-swaps/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/10-cross-currency-swaps.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/10-cross-currency-swaps/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "49a299ae54465454b5bb34e213989ce7e181bd437f2fb66d738cec696fea575f",
+      "source_file_sha256": "47c378c3f42eeae5acfd3369accdb76c0bbd28b8eaf67f590ec166546c934e05",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/10-cross-currency-swaps/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/ficc/11-credit-default-swaps.png",
+      "project": "project_FICC_Quant",
+      "source": "topics/11-credit-default-swaps/study.ipynb",
+      "cell_index": 6,
+      "output_index": 0,
+      "sha256": "2d9b9be0310cb591507986f616a671137773a690d95180bc57510813833a6ba7",
+      "source_file_sha256": "836a75877f738cdd2944fdc30aea27040acda6097e35bbc1ae3a1b795cea1da2",
+      "copy_method": "Unmodified PNG bytes decoded from executed notebook output; zero-based cell and output indices",
+      "source_url": "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/74f1737263167d225684344e507c8125093bc90d/topics/11-credit-default-swaps/study.ipynb"
+    },
+    {
+      "path": "assets/post_image/renovated/regime/forecast_comparison.png",
+      "project": "regime_model",
+      "source": "research/figures/forecast_comparison.png",
+      "sha256": "c6cb171325c4e2bbc87e5177d5c5f1813aaffcdde67941b974a851babf1eeb76",
+      "source_file_sha256": "c6cb171325c4e2bbc87e5177d5c5f1813aaffcdde67941b974a851babf1eeb76",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/regime_model/blob/4c0164ea5a114d865b45bd4b48f40ce72954a7c4/research/figures/forecast_comparison.png"
+    },
+    {
+      "path": "assets/post_image/renovated/regime/states.png",
+      "project": "regime_model",
+      "source": "research/figures/states.png",
+      "sha256": "7b80e7c12b13953974332bcb7c15bc8f894f6611092ab3dc1b5c7d36fa673281",
+      "source_file_sha256": "7b80e7c12b13953974332bcb7c15bc8f894f6611092ab3dc1b5c7d36fa673281",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/regime_model/blob/4c0164ea5a114d865b45bd4b48f40ce72954a7c4/research/figures/states.png"
+    },
+    {
+      "path": "assets/post_image/renovated/regime/segmentation.png",
+      "project": "regime_model",
+      "source": "research/figures/segmentation.png",
+      "sha256": "fd17faa42f19eab6738023351a2170cd9d5f729c6eff237fcff5892e985f57dc",
+      "source_file_sha256": "fd17faa42f19eab6738023351a2170cd9d5f729c6eff237fcff5892e985f57dc",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/regime_model/blob/4c0164ea5a114d865b45bd4b48f40ce72954a7c4/research/figures/segmentation.png"
+    },
+    {
+      "path": "assets/post_image/renovated/svd/picture1.png",
+      "project": "SVD_Portfolio_Strategy",
+      "source": "docs/assets/svd/picture1.png",
+      "sha256": "8720a5b8bd272f15b67027d0bd2413a3869e4a23eebf016e3fc9b629b5da9b5c",
+      "source_file_sha256": "8720a5b8bd272f15b67027d0bd2413a3869e4a23eebf016e3fc9b629b5da9b5c",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/bd527f741b2b998ec4b8fce5aed4786af17e14ba/docs/assets/svd/picture1.png"
+    },
+    {
+      "path": "assets/post_image/renovated/svd/picture2.png",
+      "project": "SVD_Portfolio_Strategy",
+      "source": "docs/assets/svd/picture2.png",
+      "sha256": "454a3542622928953ee30d2f6aa435ece9e091be1d6185ec7a199462f77148c7",
+      "source_file_sha256": "454a3542622928953ee30d2f6aa435ece9e091be1d6185ec7a199462f77148c7",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/bd527f741b2b998ec4b8fce5aed4786af17e14ba/docs/assets/svd/picture2.png"
+    },
+    {
+      "path": "assets/post_image/renovated/svd/usequity_var_explained.png",
+      "project": "SVD_Portfolio_Strategy",
+      "source": "docs/assets/svd/usequity_var_explained.png",
+      "sha256": "a8f5b10a94d252a365ef50631e5163744a6d145a2e60bc33d36ba13ae3fe947e",
+      "source_file_sha256": "a8f5b10a94d252a365ef50631e5163744a6d145a2e60bc33d36ba13ae3fe947e",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/bd527f741b2b998ec4b8fce5aed4786af17e14ba/docs/assets/svd/usequity_var_explained.png"
+    },
+    {
+      "path": "assets/post_image/renovated/svd/us_equity_volatility_intervals.png",
+      "project": "SVD_Portfolio_Strategy",
+      "source": "docs/assets/svd/us_equity_volatility_intervals.png",
+      "sha256": "8afb6403834da20de7520a77797503496383776744053542e989c60593f08191",
+      "source_file_sha256": "8afb6403834da20de7520a77797503496383776744053542e989c60593f08191",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/bd527f741b2b998ec4b8fce5aed4786af17e14ba/docs/assets/svd/us_equity_volatility_intervals.png"
+    },
+    {
+      "path": "assets/post_image/renovated/svd/multi_asset_weights.png",
+      "project": "SVD_Portfolio_Strategy",
+      "source": "docs/assets/svd/multi_asset_weights.png",
+      "sha256": "65953fbdebcdd764f54324eb9519061f93dd5c3aabdb06e5b4d36bebf27d2b55",
+      "source_file_sha256": "65953fbdebcdd764f54324eb9519061f93dd5c3aabdb06e5b4d36bebf27d2b55",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/bd527f741b2b998ec4b8fce5aed4786af17e14ba/docs/assets/svd/multi_asset_weights.png"
+    },
+    {
+      "path": "assets/post_image/renovated/svd/us_equity_sensitivity.png",
+      "project": "SVD_Portfolio_Strategy",
+      "source": "docs/assets/svd/us_equity_sensitivity.png",
+      "sha256": "d67d58d6aad8837bd37c744f8c6f73f76495e3988cc0ae579eb0e69fcda0238a",
+      "source_file_sha256": "d67d58d6aad8837bd37c744f8c6f73f76495e3988cc0ae579eb0e69fcda0238a",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/bd527f741b2b998ec4b8fce5aed4786af17e14ba/docs/assets/svd/us_equity_sensitivity.png"
+    },
+    {
+      "path": "assets/post_image/renovated/factors/topic_svd_stability.png",
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "source": "research/figures/topic_svd_stability.png",
+      "sha256": "6e34008b6cfc85a618512b5248c59b2564ab760d6ba643d0fd1368e4d881291d",
+      "source_file_sha256": "6e34008b6cfc85a618512b5248c59b2564ab760d6ba643d0fd1368e4d881291d",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/760a183c19f8a3d0e18c5482751bbe327a61680d/research/figures/topic_svd_stability.png"
+    },
+    {
+      "path": "assets/post_image/renovated/factors/extended_factor_map.png",
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "source": "research/figures/extended_factor_map.png",
+      "sha256": "962e2184232190c6f9bfb7e804ad3a8ca2baa4b2a3695c2c2ea2aa0788bfe9dc",
+      "source_file_sha256": "962e2184232190c6f9bfb7e804ad3a8ca2baa4b2a3695c2c2ea2aa0788bfe9dc",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/760a183c19f8a3d0e18c5482751bbe327a61680d/research/figures/extended_factor_map.png"
+    },
+    {
+      "path": "assets/post_image/renovated/factors/reconstruction.png",
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "source": "research/figures/reconstruction.png",
+      "sha256": "0a487c246049dcd1d2259e169590e26510c6404475bd520c19fc81f38cef09c1",
+      "source_file_sha256": "0a487c246049dcd1d2259e169590e26510c6404475bd520c19fc81f38cef09c1",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/760a183c19f8a3d0e18c5482751bbe327a61680d/research/figures/reconstruction.png"
+    },
+    {
+      "path": "assets/post_image/renovated/factors/stability.png",
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "source": "research/figures/stability.png",
+      "sha256": "180e603e54fff556582b013e221a1704c303e36041074b4834e4a415958fcc89",
+      "source_file_sha256": "180e603e54fff556582b013e221a1704c303e36041074b4834e4a415958fcc89",
+      "copy_method": "Unmodified source figure",
+      "source_url": "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/760a183c19f8a3d0e18c5482751bbe327a61680d/research/figures/stability.png"
+    }
+  ],
+  "linked_research_files": {
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/01-bsm-options/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/01-bsm-options/README.md",
+      "sha256": "c614e8ea9af516c3111de795dbfe2f5174b81051e7639a68982bddfe04f6cd98"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/01-bsm-options/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/01-bsm-options/study.ipynb",
+      "sha256": "bca5e9ced2701f52d8350270796567161d79165f4d7f2ee4bf7d8d6fedbd3973"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "README.md",
+      "sha256": "92cecd7cde068c2e90a63378eca79550b956c8d4044c18dc8b9139683cf0a0a3"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/03-curve-inversion/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/03-curve-inversion/study.ipynb",
+      "sha256": "35ad3d2cb6ff55cbca0312101d35ec0292edd65113d0f6e9d30a608147d29ac8"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/02-yield-curves/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/02-yield-curves/README.md",
+      "sha256": "a7ac8e7038ca3f6798ee81c80c5272d06c1ee1d8a858c088d67c447fc532a6a6"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/02-yield-curves/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/02-yield-curves/study.ipynb",
+      "sha256": "6394fda9d438cc27e3d3e20d632767b412aab5287b6e40abafcd373c9476c426"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/04-bond-valuation/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/04-bond-valuation/README.md",
+      "sha256": "8f82ae12adf7ca2ae5aa9e44f51bca36a85d90a0f23d4597081c9de65964acde"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/04-bond-valuation/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/04-bond-valuation/study.ipynb",
+      "sha256": "cf74fd8c6f8296b1b6852d0a0182559ff1e7838879735cf12078f327bee90da1"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/research/run_study.py": {
+      "project": "project_FICC_Quant",
+      "path": "research/run_study.py",
+      "sha256": "edb880eabe57e5c34907b8f556e50d2d61b70b46a793924974b17b915f17448d"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/05-bond-risk/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/05-bond-risk/README.md",
+      "sha256": "45eb8fc77ff5d3b222bdda1b6d31add639fcb05f437ade90270fedbb11458e49"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/05-bond-risk/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/05-bond-risk/study.ipynb",
+      "sha256": "f18e92e38e8915832335cebd0a0a7f554e75de4877ae993e02879da9b142f38c"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/research/pricing.py": {
+      "project": "project_FICC_Quant",
+      "path": "research/pricing.py",
+      "sha256": "28461f61d476dcaef60e341e5c661c46242bffc26b16684ca0446c435f658964"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/06-swap-curves/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/06-swap-curves/README.md",
+      "sha256": "b3a44f2b9dbbe86c898fe3cc22d5ee34aa23f8fdc57fdeb612b2c217046409b6"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/06-swap-curves/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/06-swap-curves/study.ipynb",
+      "sha256": "f87a117218c649b7728a1ebe43e716ddcbb72118d7988999caa25b7ebbd8b001"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/08-interest-rate-swaps/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/08-interest-rate-swaps/README.md",
+      "sha256": "a6a32871eca877746e4926364335d1544555deeb5c15206fbf586d85673f907d"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/08-interest-rate-swaps/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/08-interest-rate-swaps/study.ipynb",
+      "sha256": "790b6db52c8e006f65ac123f35bedac56105bb0d42f573c72683b4c4897e9cc2"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/research/SOURCES.md": {
+      "project": "project_FICC_Quant",
+      "path": "research/SOURCES.md",
+      "sha256": "49e401e9ba751119e536d622d42a2a90a0d981059ebe480a2e8a8ff597b886a3"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/10-cross-currency-swaps/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/10-cross-currency-swaps/README.md",
+      "sha256": "0ef5c8db6110ae80972c818b020c8e9052a23d9a293acd80e43e132878a018dc"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/10-cross-currency-swaps/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/10-cross-currency-swaps/study.ipynb",
+      "sha256": "47c378c3f42eeae5acfd3369accdb76c0bbd28b8eaf67f590ec166546c934e05"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/11-credit-default-swaps/study.ipynb": {
+      "project": "project_FICC_Quant",
+      "path": "topics/11-credit-default-swaps/study.ipynb",
+      "sha256": "836a75877f738cdd2944fdc30aea27040acda6097e35bbc1ae3a1b795cea1da2"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/11-credit-default-swaps/README.md": {
+      "project": "project_FICC_Quant",
+      "path": "topics/11-credit-default-swaps/README.md",
+      "sha256": "e959c33a1719853a953c4489121cbeca9a595fd8a136dd3a3429255eeef9387b"
+    },
+    "https://github.com/QuhiQuhihi/regime_model": {
+      "project": "regime_model",
+      "path": "README.md",
+      "sha256": "db6119b304f6bfbf0166d1fed23f6636fc641ba04be5a36e6d2b28e5da20ef80"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/docs/01-methods.md": {
+      "project": "regime_model",
+      "path": "docs/01-methods.md",
+      "sha256": "92022de8ceb2fbf31316ef0f74171b8ed72e004af79bd7004dd8b977557848e3"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/docs/02-results.md": {
+      "project": "regime_model",
+      "path": "docs/02-results.md",
+      "sha256": "df2ab9fb9a2baee46a35c8098fe6c0eb321842bc63ac60776b26229778aee0eb"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/study.ipynb": {
+      "project": "regime_model",
+      "path": "study.ipynb",
+      "sha256": "1308f59f0bdbe3edd68da6e79e263cd0f307d7abe5b0adeb4bf8e97c3e078017"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/research/PROTOCOL.md": {
+      "project": "regime_model",
+      "path": "research/PROTOCOL.md",
+      "sha256": "e561d3b659ee3bbbd90ac52ea0c3164960cc2b9cc2d9c3c52b145c96af2f8ef3"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/research/SOURCES.md": {
+      "project": "regime_model",
+      "path": "research/SOURCES.md",
+      "sha256": "a57b1bc08f3087036775db133b20198c60faf918a64171fae5bf9dac73e80ed9"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/research/results/retrospective_breakpoints.csv": {
+      "project": "regime_model",
+      "path": "research/results/retrospective_breakpoints.csv",
+      "sha256": "c9697112d520cccff2401a6cf83bde54d8fc5ec2c30ae93cc459622505c13a86"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/research/results/synthetic_detection.csv": {
+      "project": "regime_model",
+      "path": "research/results/synthetic_detection.csv",
+      "sha256": "b85eb63f24ecf63af71124d04700be3a6bd07b79522677c9dda8a50a3fe61e92"
+    },
+    "https://github.com/QuhiQuhihi/regime_model/blob/main/research/RESEARCH_AGENDA.md": {
+      "project": "regime_model",
+      "path": "research/RESEARCH_AGENDA.md",
+      "sha256": "6edf7b9ee41473b2ad1ef567fc1511fbe0bfbadedc75676a03aa59b55c930ece"
+    },
+    "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy": {
+      "project": "SVD_Portfolio_Strategy",
+      "path": "README.md",
+      "sha256": "aa0b9d60e30237e87bb3d2d419ddbdcec7f836a4f56533831f323a758851585b"
+    },
+    "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/main/docs/results_summary.md": {
+      "project": "SVD_Portfolio_Strategy",
+      "path": "docs/results_summary.md",
+      "sha256": "e4a30f2d49609b26b079606808e7595c9c95f19ef5c6c9f17dc3ed9e8362c979"
+    },
+    "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/main/docs/research_protocol.md": {
+      "project": "SVD_Portfolio_Strategy",
+      "path": "docs/research_protocol.md",
+      "sha256": "a478d45cb52dcdb994dd67a790ff209dfd4571d1cf15a4cd09f824cf2ad70114"
+    },
+    "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/main/SVD-US_Equity.ipynb": {
+      "project": "SVD_Portfolio_Strategy",
+      "path": "SVD-US_Equity.ipynb",
+      "sha256": "cb4a08dccf81b1c7c176e3b4b0d703b9d60d2ea083c3294a0ecd35167fcdad1b"
+    },
+    "https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy/blob/main/SVD-Multi_Asset.ipynb": {
+      "project": "SVD_Portfolio_Strategy",
+      "path": "SVD-Multi_Asset.ipynb",
+      "sha256": "30f582ee027694250027ff3f50a0ff7c38c1c136506120b429e26d28f1de0a4c"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/02-risk-parity/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/02-risk-parity/study.ipynb",
+      "sha256": "441c53389615e21a157223a9901bbe97a1e1aa4e458fd9abde914678446fb602"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/docs/02-results.md": {
+      "project": "project_Asset_Allocation",
+      "path": "docs/02-results.md",
+      "sha256": "84ccc3f4484350749a680deec1853060b9052e4032888315e00ab294ffa6264b"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/12-estimation-risk/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/12-estimation-risk/README.md",
+      "sha256": "be2be6a3a470c6aea709fc6aa59c8135900c7fe93578c57fbe4c0d1870b30dfd"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/15-factor-risk-allocation/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/15-factor-risk-allocation/README.md",
+      "sha256": "e785d9214f1db5546eae351cb0e0a375ec7c9cf9b27ebefb63aa00c30d632544"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/02-risk-parity/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/02-risk-parity/README.md",
+      "sha256": "08bcfdf2d2d2387a79e1106e027caab3ee0fad11d6a6a604d0fdbc6dfe57a1c8"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "README.md",
+      "sha256": "fb8f91af7528ac97d6c34ae936df56c4d008f9c5322484bb08ca1b6feeed1513"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/01-mean-variance/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/01-mean-variance/study.ipynb",
+      "sha256": "5e701ceb4525f9f323885a26ecbbb27404f56ac85150a5bc063047f6611b2c82"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/13-black-litterman/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/13-black-litterman/README.md",
+      "sha256": "87616b1c318df34a5e5dbaa450b9e832bd781ae99e286dab5eb7fddba969cd17"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/14-expected-shortfall/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/14-expected-shortfall/README.md",
+      "sha256": "475603247379e9a80e6f27f223f772d372eecf0edae31f46d536a603e7327ff3"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "study.ipynb",
+      "sha256": "6824f4c8353a083599eb0126542a51decfda74a781eba6131aa550162d4a46ff"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/01-mean-variance/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/01-mean-variance/README.md",
+      "sha256": "8bdd1e60ff37f3b6a033414d1c8d9c4fa11c7cca51fd2938a4a23179531a6725"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/03-hierarchical-risk-parity/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/03-hierarchical-risk-parity/study.ipynb",
+      "sha256": "dfcb05dedafa9645f6b32aa9842373c9648f80779cffe2dce65e6dcbf705a58e"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/03-hierarchical-risk-parity/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/03-hierarchical-risk-parity/README.md",
+      "sha256": "40d9c94fd208af1993a8555f3c6a5f2b749426a170789d3f2083a5b5219a80a5"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/04-kelly-growth/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/04-kelly-growth/study.ipynb",
+      "sha256": "4688e4bd3b3e70ec8b4fbd78e20c493d2b7d094b8c6cadd71d6bce8f204fe059"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/11-backtest-selection/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/11-backtest-selection/README.md",
+      "sha256": "d39090a9734c0cf9851accbde9838da20c9beee7062fb1dc4b043a8c04830499"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/17-volatility-targeting/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/17-volatility-targeting/README.md",
+      "sha256": "9fd7a0dda748ab7d5d924bc9a603dcd50931aaf12565aa57c7ad9abede78ee4f"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/04-kelly-growth/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/04-kelly-growth/README.md",
+      "sha256": "a60b58e20d178a9a2daefaac48ddbd2e8f233bb648b1f10d7a9e91d0aed4606a"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/06-sector-momentum/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/06-sector-momentum/study.ipynb",
+      "sha256": "af05419f91f88dc02972d405f15259911ee60fb406435e7f8779fe636b592cb3"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/10-purged-validation/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/10-purged-validation/README.md",
+      "sha256": "12b9ada59885d1df60c51e924228cd3937b0f6b9340c115e89c84c6318314895"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/09-sector-reversal/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/09-sector-reversal/README.md",
+      "sha256": "719d72b3f68a80ac442a633304816c9b78b947cf107524d1785cb167c923dfcd"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/06-sector-momentum/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/06-sector-momentum/README.md",
+      "sha256": "610d1b0e7a73ab9b4beb79994a38d110a234447cd8bb7a36d13d7558de850395"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/07-vigilant-allocation/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/07-vigilant-allocation/study.ipynb",
+      "sha256": "d4d57c7c4d9c4920f9791188661f4501875132557cbc73b3e155d900c8a810c8"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/08-defensive-allocation/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/08-defensive-allocation/README.md",
+      "sha256": "5bb4c8213524fb7029ec4b44506be5ccd05b14357e17442504fe2f7728cdd124"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/07-vigilant-allocation/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/07-vigilant-allocation/README.md",
+      "sha256": "094e57b8da34e26bf40689add1add0505b393ed65e1a62146f091a2edc87410d"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/08-defensive-allocation/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/08-defensive-allocation/study.ipynb",
+      "sha256": "397868e5b885ce4c605eadac9ef520b05a9023a110eadbc49170ffb77e2a4781"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/18-cppi/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/18-cppi/README.md",
+      "sha256": "565dff68eca23832efa189d422fbd5cb4dc8f207d0507b031694cfb6e4a1f17d"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/16-liability-driven-allocation/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/16-liability-driven-allocation/README.md",
+      "sha256": "4d7868b155fe7c6f26c4dbc2b9558e65980fe3986924121e398add6e3188ef10"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/05-maximum-diversification/study.ipynb": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/05-maximum-diversification/study.ipynb",
+      "sha256": "78a92f0a875772baf135e20433181f18af96cb7336046d72359de515220469aa"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation/blob/main/topics/05-maximum-diversification/README.md": {
+      "project": "project_Asset_Allocation",
+      "path": "topics/05-maximum-diversification/README.md",
+      "sha256": "8ef2cc507434e0c93dc002896aa2bfdcc50f76f4ba060514b5cb9ae2d2d56fd7"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "README.md",
+      "sha256": "4573cf9d5406b705b764b2f28aa76443e667734c6409168d3de5ed3c6f7c208c"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/docs/01-data.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "docs/01-data.md",
+      "sha256": "3b29981b10cfb6c3794f671668919f9b28a76d9dc4b5934c6dbc2d9d4b1be3a6"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/02-svd-geometry/README.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/02-svd-geometry/README.md",
+      "sha256": "89bf24d41e28626fecfabd74b1eb6183f8a53e03e023a1d539c4f0d8cbb81a82"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/01-return-alignment/study.ipynb": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/01-return-alignment/study.ipynb",
+      "sha256": "5a3d2a404cac004868ff534eca4344a5c11674d4165da482c4df18ed4be3f889"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/02-svd-geometry/study.ipynb": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/02-svd-geometry/study.ipynb",
+      "sha256": "6a915831047cb0d9fe9137a1e41286adcd23eebd194d86490027a5ca91a1c114"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/03-alpha-uncertainty/study.ipynb": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/03-alpha-uncertainty/study.ipynb",
+      "sha256": "c052b919806a05fac5c26d5494e1d7411ceb847dbe8affe35cc407fcd97d44c5"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/study.ipynb": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "study.ipynb",
+      "sha256": "cc6b5face4fde667348f3727c176ee5da894c372ffcdb1ff76827e8099240998"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/research/results/extended_exposures.csv": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "research/results/extended_exposures.csv",
+      "sha256": "68e23f243b853e33f381ad69bc09c31c60c114bb1bf880dba66e8b450e2d8e46"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/docs/02-methods.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "docs/02-methods.md",
+      "sha256": "523cc98984b5f7f8cb6faf101cc559448e5cd17334594929ad154d160a9921c3"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/docs/03-results.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "docs/03-results.md",
+      "sha256": "be5e7c5a845e440056df524d92d7e5ff94a6b4497655a0383e11afab59ce89b4"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/04-economic-exposures/README.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/04-economic-exposures/README.md",
+      "sha256": "5b4da964f45b31ab064ac32803d73ad2e6e8358383c6741ea59d54a570507788"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/04-economic-exposures/study.ipynb": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/04-economic-exposures/study.ipynb",
+      "sha256": "e64549dd617107699b162bf2f38fafc5390453856828b558e9612fdca0a92b6b"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/05-rolling-attribution/README.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/05-rolling-attribution/README.md",
+      "sha256": "354e17e5f4b8fd1596749bfa6e421e428b8a0320c91761e60078b3d116e79043"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/05-rolling-attribution/study.ipynb": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/05-rolling-attribution/study.ipynb",
+      "sha256": "21fc0c746800017b70e14d801f4818d5f24d5f036746549c96b407b52f5a93a1"
+    },
+    "https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF/blob/main/topics/03-alpha-uncertainty/README.md": {
+      "project": "Famma-French-Factors-with-Sector-ETF",
+      "path": "topics/03-alpha-uncertainty/README.md",
+      "sha256": "d5471d58a11e0df1f7d3f482eb1e684375c8fc06423c220c802ebec650c0b21b"
+    },
+    "https://github.com/QuhiQuhihi/project_Asset_Allocation": {
+      "project": "project_Asset_Allocation",
+      "path": "README.md",
+      "sha256": "fb8f91af7528ac97d6c34ae936df56c4d008f9c5322484bb08ca1b6feeed1513"
+    },
+    "https://github.com/QuhiQuhihi/project_FICC_Quant": {
+      "project": "project_FICC_Quant",
+      "path": "README.md",
+      "sha256": "92cecd7cde068c2e90a63378eca79550b956c8d4044c18dc8b9139683cf0a0a3"
+    }
+  },
+  "scope": "Editorial adaptation of completed research. No new historical data or research computations generated for this blog revision.",
+  "validation": [
+    "Original article paths and publication dates preserved",
+    "Figure bytes match committed source figures or executed notebook outputs",
+    "Linked main-branch research files verified against source commits",
+    "Published Python examples executed in the corresponding locked project environments"
+  ]
+}

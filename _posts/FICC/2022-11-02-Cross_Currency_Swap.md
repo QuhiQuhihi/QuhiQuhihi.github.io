@@ -1,309 +1,76 @@
 ---
-title: Cross Currency Swap (CCS)
-author:
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+title: "Cross-currency swaps: a cash-flow ledger before the pricing engine"
+author: daham
 date: 2022-11-02 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [FICC Quant]
-tags: [investment, derivative]
-mermaid: true
+tags: [investment, derivatives, QuantLib]
 render_with_liquid: false
 math: true
 ---
 
-This post is about cross currency swap. Though CCS is not familiar, IRS can offer interest rate risk - currency rate risk mitigation. If you heavily invest on foreign currency based asset classes for long term, CCS is absoultely what you are looking for.  
+A cross-currency swap combines two interest-rate exposures with an exchange-rate exposure. Before choosing a curve engine, it helps to write the actual currency ledger, including principal exchanges. A position can have zero value at inception and still acquire substantial value when spot changes.
 
-## What is Cross Currency Swap
-Suppose you are portfolio manager at Korea, you want to invest certain asset in US with USDollar. Some might think FX swap as a solution to mitigate currency risk since FX swap combines spot and forward agreement. However, typical FX swap contracts have maturity under 1 year. So, if use forward aggrement in rolling manner, you cannot mitigate risk completely.   
+The maintained example uses a **five-year fixed-for-fixed USD/EUR swap** to isolate that mechanism. The remaining USD leg is worth 110 and the remaining EUR leg is worth 100 in their respective currencies. At spot 1.10 USD per EUR they offset. Increasing the conversion spot to 1.20, while holding curves and contractual cash flows fixed, gives the remaining position a value of **−10 USD**.
 
-Cross Currency Swap is used in this situation. CCS is OTC contract which participants exchange interest of each currency to use foreing currency. For example, one pay KRW interest to use KRW currency loan and the others pay USD interest to use USD loan. Typically, notional amount (loan amount) is exchanged at the beginning of contract with spot exchange rate.
+## State the direction and currency units
 
-Typically, every 6 month, interest are payed. And participants who have KRW & use USD  pays fixed interest and the other participant who have USD & use KRW pays floating interest to others. See below image to help your understanding.   
-![CCS](/assets/img/post_image/FICC/CCS/ccs1.png)
+The holder receives EUR 100 and pays USD 110 at inception. During the contract, the holder pays EUR coupons and receives USD coupons. At maturity, EUR 100 is returned and USD 110 is received. Those are contractual amounts; a scenario does not reset them to a new spot rate.
 
-## How to valuate Cross Currency Swap
+| Date | USD received | EUR received |
+|---|---:|---:|
+| Inception | −110.000000 | +100.000000 |
+| Each year, 1–4 | +4.489185 | −2.531512 |
+| Year 5, including principal | +114.489185 | −102.531512 |
 
-Swap can be caluclated by summing present value of expected cashflows. Since interest rate of each currency is different, we need to build two individual interest rate swap curve for each currency. Equation is like below.    
-$CCS  Swap  Value = {Receive} - {Pay}$    
-where,   
-$Receive = N \times e_{t_0} \times [1-\frac{1}{({1+z_{t_n}}^{KRW})^{t_n}} + \sum_{i=1}^{n} \frac{{s_{t_0}}^{KRW} \delta_{i-1}}{({1+z_{t_i}}^{KRW})^{t_i}}] $ 
-$Pay = N \times [1-\frac{1}{(1+z_{t_n}^{USD})^{t_n}} - \sum_{i=1}^{n} \frac{L_{t_{i-1}}^{USD} \delta_{i-1}}{(1+z_{t_i}^{USD})^{t_i}}]$    
+These cash flows use **illustrative flat continuous USD 4% and EUR 2.5% rates**, annual exact-year payments, zero basis and compatible collateral assumptions. They are not a market cross-currency basis quote set. The construction deliberately avoids resettable notionals and floating-index conventions so the principal and conversion signs remain visible.
 
+For each currency $c$, a par annual coupon follows from
 
-Below picture gives you what really consists of CCS. CCS decomposition helps you to understand how above frightening equation is derived from.    
-![CCS](/assets/img/post_image/FICC/CCS/ccs2.png)
+$$k_c=\frac{1-D_c(T)}{\sum_{i=1}^{5}D_c(i)}.$$
 
+Immediately after the initial exchange, the remaining USD value is
 
-## Buyer and seller of cross currency swap (CCS)
-Bid CCS (CCS pay) = expect exchage rate rise, KRW interest rate rise, USD interest rate fall    
-Ask CCS (CCS receive) = expect exchange rate fall, KRW interest rate fall, USD interest rate fall    
-![CCS](/assets/img/post_image/FICC/CCS/ccs3.png)
+$$V(S)=PV_{USD\ leg}-S\,PV_{EUR\ leg},$$
 
+where $S$ is USD per EUR. Initial exchanges balance at inception and are not reinserted into a later remaining-cash-flow valuation.
 
+## Use QuantLib discount factors to check the ledger
 
+The topic notebook evaluates the exact exponential discount factors directly. This compact adaptation uses QuantLib flat curves for the same assumptions and reconciles them with that formula. Run it from the maintained project root; the date context restores the global setting afterward. Times are exact year fractions here, so no currency holiday schedules are implied.
 
-
-## Summary
-See below picture, if you are facing trouble in memorizing the CCS structure.
-![CCS](/assets/img/post_image/FICC/CCS/ccs1.png)
-
-
-## Prequisite 1
 ```python
-pip install QuantLib==1.18
-pip install QuantExt-Python==1.8.3.3.5
-```   
-We use extended QuantLib package. So, you need to install stated version to calculate CCS.    
-Since original quantlib cannot incorporate multiple curve, which is essential for cross currency products, We have to use extended QuantLib package. Please follow above code.
-
-## Prequisite 2
-```python
-from quant_lib.fx_swap_curve import get_quote, usdirs_curve, krwccs_curve
-```
-If you don't want to make your own swap curve library, go to this link and download and place it appripriate directory.   
-[FX_Swap_Curve_Code](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/quant_lib/fx_swap_curve.py) 
-
-
-## Result
-Let's price cross currency swap   
-```yaml
-price of FXF = 19914.3747
-FX Delta = -4296.0136
-USD IR Delta = -6301.2805
-KRW IR Delta = 4523955.1303
-Theta = -23596.1045
-```
-
-
-
-## Let's code this idea
-Full code can be found at below link.   
-[CODE](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/10_Cross_Currency_Swap.ipynb)
-
-## Full Code
-```python
-import os
-import datetime
 import numpy as np
-import pandas as pd
+import QuantLib as ql
+from research.pricing import DATE, valuation_date
 
-import QuantExt as qe
-
-from quant_lib.fx_swap_curve import get_quote, usdirs_curve, krwccs_curve
-
-class CCS():
-    def __init__(self, today, effective_date, maturity_date, ccs_rate, fx_spot, usd_notional, position):
-        
-        # initial setup
-        self.date = today
-        self.usd_curve = self.usd_curve(self.date)
-        self.krw_curve = self.krw_curve(self.date)
-        self.fx_spot = fx_spot
-
-        self.effective_date = qe.Date(effective_date.day, effective_date.month, effective_date.year)
-        self.maturity_date = qe.Date(maturity_date.day, maturity_date.month, maturity_date.year)
-
-        self.ccs_rate = ccs_rate
-
-        self.usd = qe.KRWCurrency()
-        self.krw = qe.USDCurrency()
-        self.usd_notional = usd_notional
-        self.krw_notional = usd_notional * fx_spot
-
-        self.day_count = qe.ActualActual()
-
-        if position == 'long':
-            self.position = qe.VanillaSwap.Payer
-        else:
-            self.position = qe.VanillaSwap.Receiver
-
-        self.length = 2
-        self.spread = 0.0
-        self.convention = qe.ModifiedFollowing
-        self.calendar = qe.JointCalendar(qe.SouthKorea(), qe.UnitedStates())
-        self.tenor = qe.Period(6, qe.Months)
-
-        self.fixed_day_count = qe.Actual365Fixed()
-        self.float_day_count = qe.Actual360()
-        self.dateGeneration = qe.DateGeneration.Backward()
-
-        # pricing result
-        self.npv = self.PRICING(self.usd_curve, self.krw_curve, self.fx_spot)
-        self.fx_delta = self.FX_DELTA()
-        self.usd_ir_delta = self.USD_IR_DELTA()
-        self.krw_ir_delta = self.KRW_IR_DELTA()
-        self.theta = self.THETA()
-    
-    def usd_curve(self, date):
-        return usdirs_curve(date, get_quote(date, 'USD'))
-    
-    def krw_curve(self, date):
-        return krwccs_curve(date, get_quote(date, 'KRW'))
-
-
-    def PRICING(self, usd_curve, krw_curve, fx_spot):
-        
-        # Handles of Market variables
-        usd_curve_handle = qe.YieldTermStructureHandle(usd_curve)
-        krw_curve_handle = qe.YieldTermStructureHandle(krw_curve)
-        fx_spot_handle = qe.QuoteHandle(qe.SimpleQuote(fx_spot))
-
-        # Reference Rate
-        usd_6m_libor = qe.USDLibor(qe.Period(6, qe.Months), usd_curve_handle)
-
-        # Fixed Schedule
-        fixed_schedule = qe.Schedule(self.effective_date,
-                                     self.maturity_date,
-                                     self.tenor,
-                                     self.calendar,
-                                     self.convention,
-                                     self.convention,
-                                     self.dateGeneration,
-                                     False
-                                )
-        
-        float_schedule = qe.Schedule(self.effective_date,
-                                     self.maturity_date,
-                                     self.tenor,
-                                     self.calendar,
-                                     self.convention,
-                                     self.convention,
-                                     self.dateGeneration,
-                                     False
-                                )
-        
-        ccs = qe.CrossCcyFixFloatSwap(self.position,
-                                      self.krw_notional,
-                                      self.krw,
-                                      fixed_schedule,
-                                      self.ccs_rate,
-                                      self.fixed_day_count,
-                                      self.convention,
-                                      self.length,
-                                      self.calendar,
-                                      self.usd_notional,
-                                      self.usd,
-                                      float_schedule,
-                                      usd_6m_libor,
-                                      self.spread,
-                                      self.convention,
-                                      self.length,
-                                      self.calendar
-                                )
-        
-        # Price Engine
-        engine = qe.CrossCcySwapEngine(self.krw,
-                                       krw_curve_handle,
-                                       self.usd,
-                                       usd_curve_handle,
-                                       fx_spot_handle
-                                )
-
-        # conduct prcing
-        ccs.setPricingEngine(engine)
-
-        # net present value
-        npv = ccs.NPV()
-
-        return npv
-
-    
-    def FX_DELTA(self):
-
-        percentage = 0.01
-
-        # CCS price when 1% up
-        up_fx = self.fx_spot * (1 + percentage)
-        up_ccs = self.PRICING(self.usd_curve, self.krw_curve, up_fx)
-
-        # CCS price when 1% down
-        down_fx = self.fx_spot * (1 - percentage)
-        down_ccs = self.PRICING(self.usd_curve, self.krw_curve, down_fxf)
-
-        return  (up_ccs - down_ccs) / 2
-
-
-
-
-    def USD_IR_DELTA(self):
-        # Handle of USD curve
-        curve_handle = qe.YieldTermStructureHandle(self.usd_curve)
-
-        # 1 bp
-        basis_point = 0.0001
-
-        # ccs price when 1bp up
-        up_curve = qe.ZeroSpreadedTermStructure(curve_handle, qe.QuoteHandle(qe.SimpleQuote(basis_point)))
-        up_ccs = self.PRICING(up_curve, self.krw_curve, self.fx_spot)
-
-        # ccs price when 1bp down
-        down_curve = qe.ZeroSpreadedTermStructure(curve_handle, qe.QuoteHandle(qe.SimpleQuote(-basis_point)))
-        down_ccs = self.PRICING(down_curve, self.krw_curve, self.fx_spot)       
-
-        return (up_ccs - down_ccs) / 2
-    
-    
-    def KRW_IR_DELTA(self):
-        # Handle of KRW curve
-        curve_handle = qe.YieldTermStructureHandle(self.krw_curve)
-
-        # 1 bp
-        basis_point = 0.0001
-
-        # ccs price when 1bp up
-        up_curve = qe.ZeroSpreadedTermStructure(curve_handle, qe.QuoteHandle(qe.SimpleQuote(basis_point)))
-        up_ccs = self.PRICING(self.usd_curve, up_curve, self.fx_spot)
-
-        # ccs price when 1bp down
-        down_curve = qe.ZeroSpreadedTermStructure(curve_handle, qe.QuoteHandle(qe.SimpleQuote(basis_point)))
-        down_ccs = self.PRICING(self.usd_curve, down_curve, self.fx_spot)
-
-        return (up_ccs - down_ccs) / 2
-
-
-
-    def THETA(self):
-        # theta is change in value if one unit time passes.
-        # in here, unit time is 1 day
-        # since derivative product have time value, time to maturity is major variable in pricing derivatives
-        price_t0 = self.PRICING(self.usd_curve, self.krw_curve, self.fx_spot)
-
-        # ccsprice at t1
-        usd_curve_t1 = self.usd_curve(self.date + datetime.datetime(days=1))
-        krw_curve_t1 = self.krw_curve(self.date + datetime.datetime(days=1))
-
-        price_t1 = self.PRICING(usd_curve_t1, krw_curve_t1, self.fx_spot)
-
-        return price_t1 - price_t0
-
-
-## build CCS contract information
-todays_date = datetime.date(2020, 10, 8)
-effective_date = datetime.date(2021, 11, 1)
-maturity_date = datetime.date(2025, 11, 1)
-
-position = 'long'
-fx_spot = 1133.85
-
-ccs_rate = 0.002438
-usd_notional = 10000000
-
-# build CCS object
-ccs = CCS(today=todays_date,
-        effective_date=effective_date,
-        maturity_date=maturity_date,
-        ccs_rate=ccs_rate,
-        fx_spot=fx_spot,
-        usd_notional=usd_notional,
-        position=position
-)
-
-# Print result
-print("price of FXF = {}".format(round(ccs.npv,4)))
-print("FX Delta = {}".format(round(ccs.fx_delta,4)))
-print("USD IR Delta = {}".format(round(ccs.usd_ir_delta,4)))
-print("KRW IR Delta = {}".format(round(ccs.krw_ir_delta,4)))
-print("Theta = {}".format(round(ccs.theta,4)))
+with valuation_date():
+    dc = ql.Actual365Fixed()
+    usd = ql.FlatForward(DATE, .04, dc)
+    eur = ql.FlatForward(DATE, .025, dc)
+    times = np.arange(1, 6, dtype=float)
+    d_usd = np.array([usd.discount(float(t)) for t in times])
+    d_eur = np.array([eur.discount(float(t)) for t in times])
+    assert np.allclose(d_usd, np.exp(-.04 * times), atol=1e-12, rtol=0)
+    assert np.allclose(d_eur, np.exp(-.025 * times), atol=1e-12, rtol=0)
+    k_usd = (1 - d_usd[-1]) / d_usd.sum()
+    k_eur = (1 - d_eur[-1]) / d_eur.sum()
+    pv_usd = 110 * (k_usd * d_usd.sum() + d_usd[-1])
+    pv_eur = 100 * (k_eur * d_eur.sum() + d_eur[-1])
+    print(round(pv_usd - 1.10 * pv_eur, 6),
+          round(pv_usd - 1.20 * pv_eur, 6))
+# 0.0 -10.0
 ```
 
+![Remaining cross-currency cash-flow value as USD per EUR spot changes.](/assets/post_image/renovated/ficc/10-cross-currency-swaps.png)
+*Fixed coupons, notionals and curves remain unchanged. The plot is a spot-conversion scenario for the remaining legs, not a historical return series.*
 
+## Separate currency risk from a basis calibration
+
+The annual par coupons are **4.081077% USD** and **2.531512% EUR**. Both legs independently price at par. A finite-difference spot derivative agrees with $\partial V/\partial S=-PV_{EUR}=-100$, measured as USD value per unit change in USD/EUR. The example also increases the contractual EUR coupon by 10 bp: the resulting change is **−0.510578 USD**. That is an annuity calculation, not an estimated market basis spread.
+
+The [FX-forward chapter](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/09-fx-forwards) provides a related consistency check. For a forward receiving one EUR at maturity and paying $K$ USD, $PV=S D_{EUR}-K D_{USD}$ and $F=S D_{EUR}/D_{USD}$. Its separate OIS-based illustration produces a one-year forward of **1.114175 USD/EUR** from spot 1.10. It uses a different USD curve from this flat-rate CCS exercise, so the numbers should not be mixed.
+
+Real cross-currency valuation requires collateral currency, basis quotes, settlement, fixing rules, principal resets and funding conventions. This simple ledger does not calibrate those objects or establish executable covered-interest arbitrage. Its contribution is a validated set of signs, units and cash-flow identities that can be retained when a richer instrument is introduced. The [project source register](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/research/SOURCES.md) identifies the reference material and the boundaries of the constructed inputs.
+
+[Read the topic note](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/10-cross-currency-swaps/README.md) · [Explore the executed notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/10-cross-currency-swaps/study.ipynb) · [Browse all QuantLib desk examples](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/README.md)

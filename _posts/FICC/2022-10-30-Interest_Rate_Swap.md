@@ -1,226 +1,65 @@
 ---
-title: Interest Rate Swap (IRS)
-author:
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+title: "Interest rate swaps in QuantLib: cash flows, fair coupons and hedging"
+author: daham
 date: 2022-10-30 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [FICC Quant]
-tags: [investment, derivative]
+tags: [investment, derivatives, QuantLib]
 render_with_liquid: false
-use_math: true
 math: true
 ---
 
-This post is about interest rate swap. Though IRS is not familiar, IRS can offer interest rate risk mitigation or chance to seize from interest rate fluctuation.  
+An interest rate swap becomes easier to reason about when “pay fixed” and “receive floating” are written as signed cash flows. Its initial fair coupon is a consequence of those flows, their schedules, the floating-index projection and discounting assumptions. It is not a property of maturity alone.
 
-## What is Interest Rate Swap
-Interest rate swap is method to mitigate interest rate risk. If you buy IRS, you can pay fixed swap rate until maturity, while you receive floating rate(such as LIBOR) to counterparty.   
+The illustrative seven-year payer swap in this project has a fair fixed coupon of **3.959824%**. Independent floating-coupon forecasts and a fixed-leg annuity reproduce that rate and its zero initial value. Increasing the contractual fixed coupon by 10 bp, with curves unchanged, reduces value by **0.618575 per 100 notional**. This offers a simple, inspectable check on signs and price scale.
 
-Since, size of this contract is huge, it is mainly field of institutional players. I strongly recommend you to study this material for your future goal, becomming rich enough to trade IRS with your own capital. IRS combined with FX market makes huge impacts. Big IRS contracts sometimes impacts FX market. Suppose you are foreign bond investors (at dollar perspective), you might want to secure fixed income at your currency, then you might go to Forward market. So interest rate (bond) and fixed income is inevitable.    
+## Which exposure is being exchanged?
 
-## Buyer of interest rate swap(IRS)
-Suppose you are investor of floating bond investors, you might worry about fluctuating interest rate. To mitigate this, you buy IRS. So, you receive floating interest rate and pay fixed rate(swap rate).
-![IRS](/assets/img/post_image/FICC/IRS/IRS1.png)
+A payer swap pays fixed and receives floating. A borrower paying a matching floating-rate liability can use that floating receipt to offset the liability's floating component, leaving a fixed payment, subject to schedule, index and spread differences. Conversely, an investor receiving a floating-rate asset and wanting fixed receipts would generally examine the receiver direction. “Buying a swap” is less precise than stating the two legs.
 
-## Seller of interest rate swap(IRS)
-On contrary, If you think that interest rate will fall soon, you will sell IRS to counterparty. If rate falls as you expected, floating interest payment you need to pay to buyer will decrease.   
+For fixed-leg accrual fractions $\alpha_i$ and discount factors $D_i$, define $A=\sum_i\alpha_iD_i$. Let $B$ be the discounted projected floating payments per unit notional. Then
 
-## How to understand IRS?
-Of course, IRS might seems complicated to some of you. If you decompose IRS vertically, you can easily understand that IRS is simply sum of selling fixed interest rate bond and buying floating rate bond. So, you pay fixed and receive floating. This mitigates risk of interest rate rise. See picutre below.    
-![IRS](/assets/img/post_image/FICC/IRS/IRS2.png)
+$$K^*=\frac{B}{A},\qquad PV_{payer}=N(B-KA).$$
 
-In addition, IRS can be expressed in horizontally. Cashflow of IRS is sum of combined forward rate aggrements. If we sum value of forward rate aggrement with different maturity, you can calculate value of IRS. See picture below.
-![IRS](/assets/img/post_image/FICC/IRS/IRS3.png)
+The formula makes the sign transparent: raising the coupon paid reduces payer value. A conventional single-currency interest rate swap exchanges coupon amounts without an initial or terminal exchange of principal; the notional scales those amounts.
 
-## Summary
-See below picture, if you are facing trouble in memorizing the IRS structure.
-![IRS](/assets/img/post_image/FICC/IRS/IRS4.png)
+## Make the conventions visible
 
-## Prequisite
+The constructed valuation date is **15 September 2026**. The swap starts one business day later and lasts seven years. It pays fixed annually and receives a synthetic USD 3M rate quarterly, using Actual/360, the US GovernmentBond calendar and Modified Following. Notional is 100. The floating index has zero fixing lag and a next-business-day start, avoiding a hidden dependence on historical fixings in this example.
+
+Projection comes from the illustrative term curve and discounting from the OIS curve. Neither the term quotes nor the OIS quotes are live market observations. The project sets these assumptions explicitly so the coupon calculation can be investigated without a vendor terminal.
+
+This runnable excerpt uses the maintained QuantLib builders from the project root. `flows` is the independently reconstructed signed ledger, not a second engine NPV.
+
 ```python
-from quant_lib.swap_curve import get_quote, swap_curve
-```
-If you don't want to make your own swap curve library, go to this link and download and place it appripriate directory. 
-[Swap_Curve_Code](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/quant_lib/swap_curve.py) 
-[Swap_Curve_Notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/6_swap_curve.ipynb)
+from research.pricing import valuation_date, curves, swap
 
-
-for example, let's price IRS for buyers
-```yaml
-issueDate = 10/9/2022
-pricingDate = 1/9/2021
-maturityDate = 4/9/2021
-tenor = quarterly
-swap rate = 2.18%
-face value = 1000000
-settlement days = first date of month
-
-price of IRS = 16.134813731714075
-delta of IRS = 25.262571390637277
-theta of IRS = -2.3642255974538102
+with valuation_date():
+    discount, projection, _ = curves()
+    instrument, flows, fair = swap(discount, projection)
+    fixed = flows.query('instrument == "fixed"')
+    floating = flows.query('instrument == "float"')
+    annuity = (fixed.accrual * fixed.discount).sum()
+    manual_rate = floating.pv.sum() / (100 * annuity)
+    assert abs(manual_rate - fair) < 1e-10
+    assert abs(flows.pv.sum() - instrument.NPV()) < 1e-8
+    changed, _, _ = swap(discount, projection, fair + .001)
+    assert abs(changed.NPV() + 100 * .001 * annuity) < 1e-8
+    print(round(100 * fair, 6), round(changed.NPV(), 6))
+# Fair coupon 3.959824 percent; higher-coupon payer PV -0.618575
 ```
 
+![Equal and opposite fixed and floating leg present values for the par payer swap.](/assets/post_image/renovated/ficc/08-interest-rate-swaps.png)
+*Present values per 100 notional under illustrative curves. Equal aggregate values do not mean individual coupon amounts or dates match.*
 
+## What the independent comparison catches
 
-## Let's code this idea
-Full code can be found at below link.
-[CODE](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/8_Interesr_Rate_Swap.ipynb)
+The fixed annuity is **6.185755**. Multiplying it by 100 notional and a 0.001 coupon increment gives the predicted PV loss. The primary swap's total engine-versus-independent PV difference is approximately $3.28\times10^{-14}$ currency units.
 
-## Full Code
-```python
-import os
-import datetime
-import numpy as np
-import pandas as pd
+Floating coupons need careful dates. The projection ratio uses the index's value and maturity dates and its accrual convention; the cash amount then uses the actual coupon accrual. Holiday adjustments can make those intervals differ. A shortcut that assumes they are always identical can hide a convention error despite a plausible total price.
 
-import QuantLib as ql
-from quant_lib.swap_curve import get_quote, swap_curve
+For hedging, the fixed coupon must stay fixed after inception. Recomputing a fair coupon following every market shock replaces the contract with a different par swap and erases the exposure being measured. The [bond risk exercise](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/05-bond-risk) freezes both coupon and hedge units before comparing parallel, slope and local-tenor scenarios. It finds that a single swap removes one first-order curve direction while leaving shape and curvature risk.
 
-class IRS():
-    def __init__(self, today, pricing_date, maturity_date, irs_rate, notional, position, spread=0.0):
-        
-        # initial setup
-        self.date = today
-        self.curve = self.CURVE(self.date)
+Several nearby desk questions extend the same ingredients. A [forward rate agreement](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/07-forward-rate-agreements) isolates one period. [Caps and floors](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/13-caps-and-floors) place optionality on floating payments. A [European swaption](https://github.com/QuhiQuhihi/project_FICC_Quant/tree/main/topics/14-european-swaptions) makes entering a future swap optional and prices that choice using a forward swap rate and annuity. Their executed notebooks provide additional QuantLib objects and independent checks, with the same separation between illustrative assumptions and market evidence.
 
-        self.pricing_date = ql.Date(pricing_date.day, pricing_date.month, pricing_date.year)
-        self.maturity_date = ql.Date(maturity_date.day, maturity_date.month, maturity_date.year)
-
-        self.calendar = ql.UnitedStates()
-        self.convention = ql.ModifiedPreceding
-        self.day_counter = ql.Actual360()
-
-        self.fixed_tenor = ql.Period(1, ql.Years)
-        self.float_tenor = ql.Period(3, ql.Months)
-
-        self.irs_rate = irs_rate
-        self.notional = notional
-        if position == 'long':
-            self.position = ql.VanillaSwap.Payer
-        else:
-            self.position = ql.VanillaSwap.Receiver
-
-        self.spread = spread
-
-        # pricing result
-        self.npv = self.PRICING(self.curve)
-        self.delta = self.DELTA()
-        self.theta = self.THETA()
-    
-    def CURVE(self, date):
-        return swap_curve(date, get_quote(date))
-    
-
-    def PRICING(self, curve):
-
-        #yield term structure
-        curve_handle = ql.YieldTermStructureHandle(curve)
-
-        # USD 3M Libor
-        float_index = ql.USDLibor(ql.Period(3, ql.Months), curve_handle)
-
-        # Fixed Schedule
-        fixedSchedule= ql.Schedule(self.pricing_date, # effectiveDate
-                                    self.maturity_date, # terminationDate
-                                    self.fixed_tenor, # tenor
-                                    self.calendar, # calendar
-                                    self.convention, # convention
-                                    self.convention, # terminationDateConvention
-                                    ql.DateGeneration.Backward, # rule
-                                    False  # endOfMonth
-                    )
-
-        # Fixed Schedule
-        floatingSchedule= ql.Schedule(self.pricing_date, # effectiveDate
-                                    self.maturity_date, # terminationDate
-                                    self.float_tenor, # tenor
-                                    self.calendar, # calendar
-                                    self.convention, # convention
-                                    self.convention, # terminationDateConvention
-                                    ql.DateGeneration.Backward, # rule
-                                    False # endOfMonth
-                    )
-
-
-        # Interest Rate Swap
-        irs = ql.VanillaSwap(self.position,
-                            self.notional,
-                            fixedSchedule,
-                            self.irs_rate,
-                            self.day_counter,
-                            floatingSchedule,
-                            float_index,
-                            self.spread,
-                            self.day_counter
-                )
-
-        # pricing engine
-        swapEngine = ql.DiscountingSwapEngine(curve_handle)
-        irs.setPricingEngine(swapEngine)
-
-        # IRS pricing
-        npv = irs.NPV()
-        
-        return npv
-
-    
-    def DELTA(self):
-       # delta is change in values if 1bp of interest rate curve changes
-       # in here we use KRD (Key Rate Delta) not DV01
-       # KRD means how each tenor changes
-        curve_handle = ql.YieldTermStructureHandle(self.curve)
-
-        basis_point = 0.0001
-
-        # irs price when 1bp up
-        up_curve = ql.ZeroSpreadedTermStructure(
-                                                curve_handle,
-                                                ql.QuoteHandle(ql.SimpleQuote(basis_point))
-                                                )
-        up_irs = self.PRICING(up_curve)
-
-        down_curve = ql.ZeroSpreadedTermStructure(
-                                                curve_handle,
-                                                ql.QuoteHandle(ql.SimpleQuote(-basis_point))
-                                                )
-        down_irs = self.PRICING(down_curve)
-
-        #DV01 
-        delta = (up_irs - down_irs)/2
-        
-        return delta
-
-    def THETA(self):
-        # theta is change in value if one unit time passes.
-        # in here, unit time is 1 day
-        # since derivative product have time value, time to maturity is major variable in pricing derivatives
-        price_t0 = self.PRICING(self.CURVE(self.date))
-        price_t1 = self.PRICING(self.CURVE(self.date + datetime.timedelta(days=1)))
-
-        return price_t1 - price_t0
-
-## set information
-todays_date = datetime.date(2020, 10, 9)
-pricing_date = datetime.date(2021, 1, 9)
-maturity_date = datetime.date(2021, 4, 9)
-
-position = 'long'
-irs_rate = 0.00218
-notional = 1000000
-
-irs = IRS(
-    today=todays_date,
-    pricing_date=pricing_date,
-    maturity_date=maturity_date,
-    irs_rate=irs_rate,
-    notional=notional,
-    position=position,
-    spread=0.0
-    )
-
-print("price of IRS = {}".format(irs.npv))
-print("delta of IRS = {}".format(irs.delta))
-print("theta of IRS = {}".format(irs.theta))
-```
-
-
+[Read the topic note](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/08-interest-rate-swaps/README.md) · [Explore the executed notebook](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/topics/08-interest-rate-swaps/study.ipynb) · [Browse all QuantLib desk examples](https://github.com/QuhiQuhihi/project_FICC_Quant/blob/main/README.md)

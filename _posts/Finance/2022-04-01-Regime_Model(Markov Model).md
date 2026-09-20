@@ -1,111 +1,76 @@
 ---
-title: Regime Switching Model (Hidden Markov Model, Gausian Mixture Model)
-author:
-  name: unknown
-  link: https://github.com/QuhiQuhihi
+title: "Market Regimes: Can a Hidden Markov Model Improve Tomorrow's Risk Forecast?"
+author: daham
 date: 2022-10-08 12:00:00 +0800
+last_modified_at: 2026-09-20 21:00:00 +0900
 categories: [Financial Market]
-tags: [regime model, statistics]
+tags: [regime model, statistics, risk forecasting]
 render_with_liquid: false
 use_math: true
 math: true
 ---
 
-This post is about Regime Switching Model for financial market
+A market regime model becomes useful when its state estimate improves a decision made with information available at the time. A convincing chart of past crises is an interesting description; the next question is whether those states improve a forecast.
 
-## What is Regime Switching Model
-Financial market tend to show different behavior and pattern if market change their state. State is called "regime" in financial market. Easy example of regime switch is quantitative easying after COVID-19 outbreak in 2020, start of quantitative tightening in 2022.
-If we can determine what the regimes are, we can understand how a portfolio might react to various regime. This can enhance model's predictability and reduce effort to build all-time effective killer model.
+My renovated [regime research project](https://github.com/QuhiQuhihi/regime_model) tests this directly. Through **17 September 2026**, a two-state hidden Markov model (HMM) does **not establish better next-session equity risk forecasts than exponentially weighted volatility**. Its late-segment mean loss difference is **+0.2539**, with a paired 95% block interval of **[−0.1024, +0.8795]**. Lower is better, so the point estimate favors the simpler baseline. This negative result is useful: it separates a model's ability to organize history from evidence that its extra structure earns a place in a risk process.
 
-## How to build regime switch model
-Data-driven approach is letting historical data on assets and/or market risks delineate the regimes. 
-A specific example of this approach is a Gaussian Mixture Model (GMM), which is a type of unsupervised learning method. The GMM uses various Gaussian distributions to model different parts of the data. 
+## What the hidden state contributes
 
-## Why Gausian Mixture Model for regime switch model
-Gausian Mixture Model(GMM) is an especially helpful method for modeling financial assets, as their return distributions can often exhibit skew with a meaningful number of observations in the tails. Clusters derived from Guasian Mixture Model allow us to infer which state market is located at. Better estimation of market regime, more suitable tailored investment strategy and framework can be deployed.
+A Gaussian mixture model (GMM) represents observations as draws from several distributions:
 
-## Why Hidden Markov Model for regime switch model
-Fitting Market status to cluster(regime) is helpful for understanding current status. However, opportunity in finance domain can be found in prediction of future market. Information about how market regime switch is directly linked to profit of investment strategy. 
+$$
+p(x_t)=\sum_{j=1}^{K}\pi_j\,\mathcal N(x_t;\mu_j,\Sigma_j).
+$$
 
-## Data used (index)
+Components can capture different return scales, means, and combinations of asset behavior. The standard independent mixture has no transition mechanism: today's component posterior classifies today's observation, while its next-observation forecast uses the fitted mixture weights.
 
-#### I used index data from major index maker. All index are available in ETF(Exchange Traded Fund) form and can be traded easily. Index data can be found from 1992 to 2021. 
+An HMM adds a transition matrix, with entry $A_{ij}=P(S_{t+1}=j\mid S_t=i)$. A persistent high-risk state can therefore affect tomorrow's distribution. For filtered probabilities $\alpha_t(j)=P(S_t=j\mid x_{1:t})$, the forward update is
 
-```yaml
- Developed Market : MSCI world
- Emerging Market : MSCI Emerging
- Fixed Income : Bloomberg Barclays World AGG
- Risky Fixed Income : Bloomberg Barclays high yield bond
- Safety Fixed Income : Bloomberg Barclays Short-Term Treasury
- ```
-#### Emerging Marekt, Corporate(junk) bond and Safety Treasury effectively distinguished market regime. These assets shows unique movement if market sentiment, regime changes.
+$$
+\alpha_t(j)\propto f_j(x_t)\sum_i\alpha_{t-1}(i)A_{ij},
+\qquad p_{t+1\mid t}=\alpha_t A.
+$$
 
-## Strategy Overview
+The project normalizes this recursion in log space. A short known-parameter example checks it against exhaustive enumeration of hidden-state paths; changing future observations must leave previously archived forecasts unchanged. Full-sequence posterior and decoding routines require separate treatment because they can condition on later observations. See the [hmmlearn API](https://hmmlearn.readthedocs.io/en/stable/api.html) and the project's [implemented methods](https://github.com/QuhiQuhihi/regime_model/blob/main/docs/01-methods.md).
 
-0th hidden state shows bull market regime. 1th hidden state shows sideways stock market regime. 2nd hidden state shows bear market regime. 
-![MV](/assets/img/post_image/finance/regime/hidden_state_plot_1.png)
+## A small experiment with an explicit clock
 
-``` yaml
-Asset Class \ State           0th (mean / var)  1th (mean / var)  2nd (mean / var)
---------------------------    ----------------  ----------------  ----------------
-mean Emerging Market          7.11433203e-03    0.01311532        -9.92782827e-03
-vol  Emerging Market          2.01192349e-03    2.83001901e-03    1.16043600e-02
-mean Risky Fixed Income       6.31190614e-03    0.01015012        -1.80401754e-03
-vol  Risky Fixed Income       2.71058521e-04    8.79653083e-05    2.41111876e-03
-mean Safety Fixed Income      1.24535026e-03    0.00452034        3.97258990e-03
-vol  Safety Fixed Income      7.25365976e-06    2.01275656e-05    2.95434611e-05
-```
+The inputs are daily adjusted closes for an S&P 500 fund (SPY) and a long-maturity Treasury fund (TLT), from July 2018 through 17 September 2026. The first supplies the equity risk target; the second may distinguish equity stress from joint stock-and-bond shocks. The audited panel has **2,064 price dates and 2,063 return dates**, with no missing sessions filled.
 
-![MV](/assets/img/post_image/finance/regime/hidden_state_plot_2.png)
+At each monthly refit, the preceding **504 returns, including that day's close**, determine scaling and model parameters. Both Gaussian models use two states and diagonal covariance matrices. States are ordered by their fitted equity second moment; “high risk” is a numerical description, with no claim that the state identifies a recession. The HMM updates its filtered belief between refits.
 
+The forecast is a probability-weighted second moment in original return units:
 
-## Full Code
-You can see full code in here
-[CODE](https://github.com/QuhiQuhihi/project_quant/blob/master/regime_model/regime_model_kmeans_gmm.ipynb)
+$$
+v_{t+1\mid t}=\sum_jp_{t+1\mid t}(j)(\sigma_j^2+\mu_j^2).
+$$
 
-## Let's code this idea
-Mean variance strategy via python code. We used the networkx package to create Markov chain diagrams, and sklearn's GaussianMixture to estimate historical regimes
+Every model faces the same target, next-session squared equity return, and the same loss:
 
-```python
-model = mix.GaussianMixture(n_components=3, 
-                            covariance_type="full", 
-                            n_init=100, 
-                            random_state=8).fit(X)
+$$
+L(v,r^2)=\log v+\frac{r^2}{v},\qquad v\ge10^{-8}.
+$$
 
-# Predict the optimal sequence of internal hidden state
-hidden_states = model.predict(X)
+This penalizes an inadequate risk forecast when a large move occurs. Its level is **not a return percentage**; negative values are normal. A daily squared return is also a noisy proxy for conditional risk, rather than an observation of latent volatility. EWMA, with decay 0.94, and a trailing single-state second moment provide simple controls.
 
-print("Means and vars of each hidden state")
-for i in range(model.n_components):
-    print("{0}th hidden state".format(i))
-    print("mean = ", model.means_[i])
-    print("var = ", np.diag(model.covariances_[i]))
-    print()
+## What the comparison says
 
-sns.set(font_scale=1.25)
-style_kwds = {'xtick.major.size': 3, 'ytick.major.size': 3,
-              'legend.frameon': True}
-sns.set_style('whitegrid', style_kwds)
+![Risk forecast loss differences against EWMA, January 2025 through 17 September 2026](/assets/post_image/renovated/regime/forecast_comparison.png)
 
-fig, axs = plt.subplots(model.n_components, sharex=True, sharey=True, figsize=(20,9))
-colors = cm.rainbow(np.linspace(0, 1, model.n_components))
+*Original project figure. Dots show average loss differences from EWMA; bars are paired 95% intervals using 21-session circular blocks and 2,000 resamples. The HMM comparison is primary; the others are exploratory.*
 
-for i, (ax, color) in enumerate(zip(axs, colors)):
-    # Use fancy indexing to plot data in each state.
-    mask = hidden_states == i
-    ax.plot_date(select.index.values[mask],
-                 select[target].values[mask],
-                 ".-", c=color)
-    ax.set_title("{0}th hidden state".format(i), fontsize=16, fontweight='demi')
+The primary late segment contains **428 matched forecasts**. The ratio of total realized squared returns to total predicted second moments is **1.302 for HMM** and **0.989 for EWMA**: HMM understates aggregate risk in this segment. The wider post-warmup sample contains 1,538 forecasts, with an exploratory HMM-minus-EWMA difference of **+0.1191 [0.0047, 0.2982]** under the same block length. That comparison also favors EWMA.
 
-    # Format the ticks.
-    ax.xaxis.set_major_locator(YearLocator())
-    ax.xaxis.set_minor_locator(MonthLocator())
-    sns.despine(offset=10)
-    # sns.despine(left=True, bottom=True)
+Changing the state count, seed, covariance-floor setting, or feature set does not produce a favorable primary-direction point estimate. These dependent sensitivity checks cannot be counted as independent confirmations. The primary run has **74 refits and no failed HMM fits**; the three-state variant has one failure and uses the declared EWMA fallback. The [result tables](https://github.com/QuhiQuhihi/regime_model/blob/main/docs/02-results.md) retain every comparison.
 
-plt.tight_layout()
-```
+## Why the historical picture can look better
 
-## Strategy Evaluation
-To be added.
+![Archived causal HMM probabilities compared with full-sample smoothed probabilities](/assets/post_image/renovated/regime/states.png)
+
+*The upper panel uses each date's available information. The lower panel fits and smooths with the full sample. Their difference combines parameter re-estimation and future conditioning; it does not isolate smoothing alone.*
+
+Thresholding each probability at 0.5 yields **15.28% disagreement** between these historical descriptions. The retrospective chart remains useful for interpretation, but substituting its labels into a backtest changes the information set.
+
+A supporting overlay maps high-risk probability $p$ to equity weight $1-0.75p$. It executes one close after the signal and first earns the following session's return, charges 5 basis points per bought or sold dollar, and assumes zero cash interest. Its late-segment CAGR is **14.15%**, versus **11.22%** for a static 62.5% equity position. However, its average equity weight is **88.66%**, versus 62.5% for the static control, and volatility is higher. That return difference does not establish timing skill; the paired mean-return/volatility difference interval against the static control includes zero.
+
+The study is retrospective, uses revised vendor histories, and includes familiar market episodes. Its late segment is not an untouched holdout. The next useful experiment is a predeclared volatility-only model on genuinely new observations. The [executed notebook](https://github.com/QuhiQuhihi/regime_model/blob/main/study.ipynb), [protocol](https://github.com/QuhiQuhihi/regime_model/blob/main/research/PROTOCOL.md), and [source record](https://github.com/QuhiQuhihi/regime_model/blob/main/research/SOURCES.md) make the present evidence inspectable.
