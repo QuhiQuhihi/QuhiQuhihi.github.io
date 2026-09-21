@@ -5,11 +5,11 @@ order: 3.5
 permalink: /research/
 ---
 
-These six research collections connect an economic question to a mathematical model,
+These seven research collections connect an economic question to a mathematical model,
 an implementation, and evidence that can challenge the result. The articles explain the
 ideas; the linked repositories contain detailed notes and executed notebooks.
 
-Revised **21 September 2026**. Historical empirical studies and constructed numerical examples
+Revised **22 September 2026**. Historical empirical studies and constructed numerical examples
 are identified separately throughout the articles.
 
 ## Robust asset allocation
@@ -116,3 +116,16 @@ The [full research collection](https://github.com/QuhiQuhihi/Factor-Strategy-for
 and [executed notebook](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/study.ipynb)
 retain the replication, uncertainty estimates, dependent source checks, and the
 explicitly unrun bond-level follow-up.
+
+## Adaptive RFQ pricing
+
+An RFQ quote trades execution probability against margin and conditional hedge cost.
+[Adaptive RFQ pricing: when forgetting matters more than exploration](/posts/Adaptive_RFQ_Pricing/)
+connects a monotone demand model to an eight-parameter online correction, then
+separates chronological fill prediction from controlled policy experiments.
+
+In the synthetic Treasury study, forgetting old feedback reduces regret after
+simulated demand shifts, while discounted greedy outperforms discounted sampling
+in that setting. The historical holdout does not establish an adaptation benefit.
+The article includes original figures and downloadable result tables, with no
+claim of observed market profitability.

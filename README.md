@@ -1,8 +1,8 @@
 # Quantitative Boxer
 
 Research articles on portfolio construction, financial models, and quantitative investing
-by Daham Kim. The [Research index](_tabs/research.md) introduces five collections and links
-each article to detailed notes and executed notebooks.
+by Daham Kim. The [Research index](_tabs/research.md) introduces seven collections and links
+articles to detailed notes, executed notebooks, or accompanying result tables.
 
 | Collection | Source project |
 | --- | --- |
@@ -11,12 +11,20 @@ each article to detailed notes and executed notebooks.
 | Market regimes | [Causal forecasting and retrospective segmentation](https://github.com/QuhiQuhihi/regime_model) |
 | SVD and PCA | [Portfolio risk and covariance experiments](https://github.com/QuhiQuhihi/SVD_Portfolio_Strategy) |
 | Sector factor models | [State Street ETFs, factor exposures, and robustness](https://github.com/QuhiQuhihi/Famma-French-Factors-with-Sector-ETF) |
+| Corporate-bond factors | [Issuer equity information and incremental bond-portfolio value](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-) |
+| Adaptive RFQ pricing | [Monotone demand, forgetting, and exploration](_posts/ML/2026-09-22-Adaptive_RFQ_Pricing.md) |
 
 The September 2026 revision updates 22 existing articles while retaining their URLs and
-original publication dates. All 31 research figures are unchanged copies of verified project
-outputs. [Publication provenance](tools/research-publication.json) records source commits,
-document and figure hashes, and notebook output locations. Historical inputs remain in the
-research projects' permitted local caches; they are not bundled with this site.
+original publication dates, then adds corporate-bond and adaptive RFQ research articles.
+Research figures are unchanged copies of verified project outputs.
+[Publication provenance](tools/research-publication.json) records source commits where
+available, document and figure hashes, notebook output locations, and result-table exports.
+Historical inputs remain in the research projects' permitted local caches; they are not
+bundled with this site.
+
+The adaptive RFQ article uses anonymized prose, five original figures, and four aggregate
+result tables. Course, instructor, and institution identifiers are omitted. The original
+manuscript, notebook, workbook, and submission archive are not bundled with the article.
 
 ## Preview and check
 

@@ -1,5 +1,5 @@
 {
-  "revision_date": "2026-09-21",
+  "revision_date": "2026-09-22",
   "starting_blog_commit": "c7da338efffd944eb57e4910e8e293751aaf2522",
   "source_projects": {
     "project_Asset_Allocation": {
@@ -25,6 +25,12 @@
     "Factor-Strategy-for-Corporate-Bond-": {
       "repository": "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-",
       "commit": "1f565f6d7010274ff8feb333b9c05be11ba1dcfa"
+    },
+    "fx_bandit_agent": {
+      "source_type": "Local completed research project",
+      "path": "../fx_bandit_agent",
+      "manuscript_sha256": "a611a6f6ae879b5dd210729e4571dc3bdc58247ac5c52aa01d7825a64262774f",
+      "notebook_sha256": "31570884f7928ae59578a750775592dd35892504c0d80a07394ebe083206df32"
     }
   },
   "posts": [
@@ -165,11 +171,17 @@
       "sha256": "9da354142de4a71e8638ddae4a94d0181f8e03b16ad6bec2d512e83d26034cdf",
       "original_date": "2026-09-21 00:00:00 +0900",
       "previous_sha256": null
+    },
+    {
+      "path": "_posts/ML/2026-09-22-Adaptive_RFQ_Pricing.md",
+      "sha256": "9a125c5a719b9abd1f20f556b18e7e467a58a1b73ca78df9b1538af223a7d541",
+      "original_date": "2024-12-22 00:00:00 +0900",
+      "last_modified_at": "2024-12-28 00:00:00 +0900"
     }
   ],
   "research_index": {
     "path": "_tabs/research.md",
-    "sha256": "f22bc7e3d4cb5bdc634621c6f7689930480f8bcf8ea3a30cef16cb78b45bc599"
+    "sha256": "b72ec8b46a9a3aff0d8361fc18be6a6c31f76c187d626cb116b1b1ed6a0a658d"
   },
   "figures": [
     {
@@ -504,6 +516,46 @@
       "source_file_sha256": "5116db3099c3c062f829ccf1881c12237dfe15a2b5fd99f857010515ea52458f",
       "copy_method": "Unmodified source figure",
       "source_url": "https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/1f565f6d7010274ff8feb333b9c05be11ba1dcfa/research/figures/incremental_alpha.png"
+    },
+    {
+      "path": "assets/post_image/renovated/rfq-bandit/pricing_curves.png",
+      "project": "fx_bandit_agent",
+      "source": "submission/figures/report_pricing_curves.png",
+      "sha256": "f0c3779ad3ca9e6928685e91ef003fa336540bb09d47b15a49e6ab8976e366e4",
+      "source_file_sha256": "f0c3779ad3ca9e6928685e91ef003fa336540bb09d47b15a49e6ab8976e366e4",
+      "copy_method": "Unmodified PNG bytes from completed research figure"
+    },
+    {
+      "path": "assets/post_image/renovated/rfq-bandit/predictive_validation.png",
+      "project": "fx_bandit_agent",
+      "source": "submission/figures/paper_predictive_validation.png",
+      "sha256": "eb25043157adfecee4bdcffe3ca74cc57083ddf736b4e011d5cd143e5c6edcea",
+      "source_file_sha256": "eb25043157adfecee4bdcffe3ca74cc57083ddf736b4e011d5cd143e5c6edcea",
+      "copy_method": "Unmodified PNG bytes from completed research figure"
+    },
+    {
+      "path": "assets/post_image/renovated/rfq-bandit/adaptation_dynamics.png",
+      "project": "fx_bandit_agent",
+      "source": "submission/figures/paper_adaptation_dynamics.png",
+      "sha256": "7c94932ad78aac8c2d1d1672f835709e9dc049800d39ff97dd23e3bb1efa7d95",
+      "source_file_sha256": "7c94932ad78aac8c2d1d1672f835709e9dc049800d39ff97dd23e3bb1efa7d95",
+      "copy_method": "Unmodified PNG bytes from completed research figure"
+    },
+    {
+      "path": "assets/post_image/renovated/rfq-bandit/policy_contrasts.png",
+      "project": "fx_bandit_agent",
+      "source": "submission/figures/paper_policy_contrasts.png",
+      "sha256": "c13baf80aa93a2d72290a5d3d213ff22ed01b5f00c7e948258d80447b806c331",
+      "source_file_sha256": "c13baf80aa93a2d72290a5d3d213ff22ed01b5f00c7e948258d80447b806c331",
+      "copy_method": "Unmodified PNG bytes from completed research figure"
+    },
+    {
+      "path": "assets/post_image/renovated/rfq-bandit/quote_risk.png",
+      "project": "fx_bandit_agent",
+      "source": "submission/figures/quote_risk.png",
+      "sha256": "43d836d0e0529f5e22f36d0da1e0937daefc25ed236bc08d7f90a12581bb7edd",
+      "source_file_sha256": "43d836d0e0529f5e22f36d0da1e0937daefc25ed236bc08d7f90a12581bb7edd",
+      "copy_method": "Unmodified PNG bytes from completed research figure"
     }
   ],
   "linked_research_files": {
@@ -965,6 +1017,52 @@
       "date": "2026-09-21",
       "starting_blog_commit": "bc29aefc87323ee7be5a16ed10c45fdfe3b052db",
       "scope": "New corporate-bond research article, two original source figures, and Research index entry."
+    },
+    {
+      "date": "2026-09-22",
+      "starting_blog_commit": "3cde79be03dd5caf09ca66fc18b8403837f97603",
+      "scope": "New anonymized adaptive RFQ pricing article, five unchanged research figures, four aggregate result tables, and Research index entry. Source manuscript and notebook are not published with this adaptation.",
+      "validation": {
+        "jekyll_build": "Passed production build; existing theme deprecation and duplicate SVD tag warnings remain",
+        "htmlproofer": "Passed local script, link, image, and HTML checks on 90 generated HTML files",
+        "browser": "Article and Research index passed desktop 1440px and mobile 390px checks; 46 rendered math expressions, no math or JavaScript errors, five loaded figures, no page overflow",
+        "content": "Article, rendered article, CSV exports, and PNG text metadata checked for excluded identifiers; all five figures inspected visually",
+        "source_fidelity": "Five byte-identical figures; all exported numerical fields match source CSVs; seed identifier omitted from bootstrap table"
+      }
+    }
+  ],
+  "data_exports": [
+    {
+      "path": "assets/data/rfq-bandit/holdout_metrics.csv",
+      "project": "fx_bandit_agent",
+      "source": "artifacts/results/holdout_metrics.csv",
+      "source_file_sha256": "ccba7ba1b77f11118aa4ae3e7e3dfea74fe90edef61ea3ad5443a457c8e86aae",
+      "sha256": "ccba7ba1b77f11118aa4ae3e7e3dfea74fe90edef61ea3ad5443a457c8e86aae",
+      "copy_method": "Unmodified source CSV bytes"
+    },
+    {
+      "path": "assets/data/rfq-bandit/bootstrap_sensitivity.csv",
+      "project": "fx_bandit_agent",
+      "source": "artifacts/results/paper_extensions/bootstrap_sensitivity.csv",
+      "source_file_sha256": "5b7b84ec4369dc652ef70051bdca94f6ad4630c5e0ce971f6ac4c85f86928f5c",
+      "sha256": "1cb12c3ef6a2c420124682b64b30289166f0d5b42f1e89981325f1bfb2ea072b",
+      "copy_method": "All numerical result fields preserved; seed identifier omitted"
+    },
+    {
+      "path": "assets/data/rfq-bandit/stress_summary.csv",
+      "project": "fx_bandit_agent",
+      "source": "artifacts/results/stress_summary.csv",
+      "source_file_sha256": "f3d198387a7bdaab4363e6f259243a1e3865b7f761bd0fa3c9bdd292693d1f86",
+      "sha256": "f3d198387a7bdaab4363e6f259243a1e3865b7f761bd0fa3c9bdd292693d1f86",
+      "copy_method": "Unmodified source CSV bytes"
+    },
+    {
+      "path": "assets/data/rfq-bandit/policy_contrasts.csv",
+      "project": "fx_bandit_agent",
+      "source": "artifacts/results/paper_extensions/verified_policy_contrasts.csv",
+      "source_file_sha256": "c8102c3cee780020a1c04168b27e0f315cd6855370e66478a1877463a6445ab4",
+      "sha256": "c8102c3cee780020a1c04168b27e0f315cd6855370e66478a1877463a6445ab4",
+      "copy_method": "Unmodified source CSV bytes"
     }
   ]
 }
